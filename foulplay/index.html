@@ -7,3 +7,1750 @@
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="theme-color" content="#163C6E"/>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --cream:#FFF8EE;--ink:#23201B;--soft:#6B6359;
+  --blue:#163C6E;--blue2:#2A5DA0;
+  --yellow:#FFD100;--terra:#E07A5F;--mint:#9DC8A0;
+  --card:#FFFFFF;--line:#ECE2D2;
+  --shadow:0 8px 24px rgba(60,40,20,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--cream);color:var(--ink);
+  overscroll-behavior:none;line-height:1.45}
+.serif{font-family:'Fraunces',Georgia,serif}
+#app{max-width:520px;margin:0 auto;min-height:100%;position:relative;padding-bottom:88px}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,textarea{font-family:inherit;font-size:1rem}
+
+.pad{padding:22px 20px}
+.h1{font-family:'Fraunces',serif;font-size:2rem;line-height:1.08;font-weight:600;letter-spacing:-.5px}
+.h2{font-family:'Fraunces',serif;font-size:1.35rem;font-weight:600}
+.eyebrow{font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--terra);font-weight:700}
+.muted{color:var(--soft)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:var(--shadow)}
+.btn{display:block;width:100%;text-align:center;background:var(--blue);color:#fff;font-weight:700;
+  padding:16px;border-radius:16px;font-size:1.02rem;transition:transform .08s,opacity .15s}
+.btn:active{transform:scale(.97)}
+.btn.alt{background:var(--yellow);color:var(--ink)}
+.btn.ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink)}
+.btn.red{background:#CE1126}
+.btn:disabled{opacity:.45;pointer-events:none}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:10px 14px;border-radius:14px;
+  border:1.5px solid var(--line);background:#fff;font-weight:500;font-size:.9rem}
+.row{display:flex;gap:10px}
+.center{text-align:center}
+.spacer{height:14px}
+.divider{height:1px;background:var(--line);margin:18px 0}
+
+/* screens / onboarding */
+.screen{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:30px 24px;
+  animation:fade .5s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.opt{width:100%;text-align:left;padding:18px;border-radius:18px;border:1.5px solid var(--line);
+  background:#fff;margin-bottom:11px;font-weight:600;font-size:1.02rem;transition:transform .08s,border-color .15s}
+.opt:active{transform:scale(.98)}
+.opt .sub{font-weight:400;font-size:.85rem;color:var(--soft);margin-top:3px}
+.opt.pick{border-color:var(--blue);background:#F3F7FD}
+.progress{display:flex;gap:6px;margin-bottom:26px}
+.progress i{flex:1;height:5px;border-radius:3px;background:var(--line)}
+.progress i.fill{background:var(--terra)}
+
+/* session screen */
+.code-box{font-family:'Fraunces',serif;font-size:2.4rem;letter-spacing:.25em;font-weight:600;
+  background:#F3F7FD;border:2px solid var(--blue);border-radius:16px;padding:18px;text-align:center;
+  margin:14px 0;user-select:all}
+.join-input{width:100%;font-family:'Fraunces',serif;font-size:2rem;letter-spacing:.2em;text-align:center;
+  border:2px solid var(--line);border-radius:16px;padding:16px;background:#fff;text-transform:uppercase}
+.join-input:focus{border-color:var(--blue);outline:none}
+
+/* jersey picker */
+.jersey-stage{display:flex;gap:40px;justify-content:center;align-items:flex-end;margin:28px 0 24px;overflow:visible}
+.jersey-btn{background:none;border:none;padding:0 14px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;-webkit-tap-highlight-color:transparent;overflow:visible;transition:transform .15s}
+.jersey-btn:active{transform:scale(.95)}
+.j-wrap{position:relative;width:82px;height:122px;overflow:visible}
+.j-body{width:82px;height:122px;border-radius:6px 6px 14px 14px;position:relative;transition:transform .1s;box-shadow:0 6px 18px rgba(0,0,0,.2)}
+.j-sleeve-l,.j-sleeve-r{position:absolute;top:2px;width:26px;height:36px;border-radius:5px 5px 0 0}
+.j-sleeve-l{left:-20px;transform:rotate(-10deg);transform-origin:bottom right}
+.j-sleeve-r{right:-20px;transform:rotate(10deg);transform-origin:bottom left}
+.j-collar{position:absolute;top:-1px;left:50%;transform:translateX(-50%);width:36px;height:18px;background:rgba(0,0,0,.12);border-radius:0 0 18px 18px}
+.j-label{position:absolute;bottom:24px;left:0;right:0;text-align:center}
+.j-name{font-size:.7rem;font-weight:900;letter-spacing:.15em;opacity:.85}
+.j-num{font-size:2.4rem;font-weight:900;line-height:1;opacity:.9}
+.jersey-tag{font-weight:700;font-size:.95rem;letter-spacing:.05em}
+
+/* surprise message bubble */
+.msg-bubble{background:#fff;border-radius:20px 20px 4px 20px;padding:18px 20px;box-shadow:0 4px 20px rgba(0,0,0,.1);font-size:.96rem;line-height:1.65;border:1.5px solid var(--line);max-width:340px;margin:0 auto}
+
+/* scoreboard */
+.scoreboard{background:linear-gradient(135deg,#163C6E 0%,#0E2746 100%);color:#fff;border-radius:24px;
+  padding:20px;box-shadow:var(--shadow)}
+.sb-status{font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;opacity:.8;text-align:center;margin-bottom:12px}
+.sb-row{display:flex;align-items:center;justify-content:space-between}
+.sb-team{flex:1;text-align:center}
+.sb-flag{font-size:2.1rem}
+.sb-name{font-weight:700;margin-top:3px;font-size:.9rem}
+.sb-score{font-family:'Fraunces',serif;font-size:2.8rem;font-weight:600;min-width:44px;text-align:center}
+.live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#FF5252;
+  margin-right:5px;animation:pulse 1.2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.feed-item{display:flex;gap:11px;padding:12px 0;border-bottom:1px solid var(--line);font-size:.92rem}
+.feed-item .min{font-weight:700;color:var(--terra);min-width:36px}
+.feed-item:last-child{border-bottom:none}
+
+/* mascot */
+#mascot-outer{position:fixed;right:0;bottom:76px;z-index:60;display:flex;flex-direction:column;
+  align-items:center;animation:bob 2.4s ease-in-out infinite;pointer-events:none}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.m-mid{display:flex;align-items:center} /* arms + ball row */
+.m-arm{width:22px;height:7px;background:#fff;border:2.5px solid #111;border-radius:10px;
+  flex-shrink:0;pointer-events:none}
+.m-arm-l{transform:rotate(32deg) translateY(6px);transform-origin:right center}
+.m-arm-r{transform:rotate(-32deg) translateY(6px);transform-origin:left center}
+.m-legs{display:flex;gap:16px;margin-top:2px;padding:0 8px}
+.m-leg{display:flex;flex-direction:column;align-items:center;gap:0}
+.m-shin{width:7px;height:16px;background:#fff;border:2px solid #111;border-radius:4px}
+.m-shoe{width:14px;height:7px;background:#CE1126;border:2px solid #111;border-radius:0 6px 6px 0;margin-top:-1px}
+.m-shoe-l{border-radius:6px 0 0 6px}
+#mascot{width:86px;height:86px;border-radius:50%;cursor:pointer;pointer-events:auto;
+  display:flex;align-items:center;justify-content:center;position:relative;
+  background:
+    radial-gradient(ellipse 11px 9px at 32% 18%,#111 0%,#111 100%),
+    radial-gradient(ellipse 9px 8px at 70% 14%,#111 0%,#111 100%),
+    radial-gradient(ellipse 8px 8px at 8% 62%,#111 0%,#111 100%),
+    radial-gradient(ellipse 9px 8px at 83% 67%,#111 0%,#111 100%),
+    radial-gradient(ellipse 10px 9px at 50% 85%,#111 0%,#111 100%),
+    white;
+  border:3px solid #111;box-shadow:0 6px 22px rgba(0,0,0,.3)}
+#mascot:active{transform:scale(.9)}
+#mascot.hype{animation:spin .5s ease-in-out}
+@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+#mface{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;pointer-events:none}
+.meyes{display:flex;gap:11px;position:relative;z-index:2}
+.meye{width:6px;height:7px;border-radius:50%;background:#23201B;animation:blink 4s ease-in-out infinite}
+@keyframes blink{0%,90%,100%{transform:scaleY(1)}95%{transform:scaleY(0.05)}}
+.mbrows{display:flex;gap:8px;margin-bottom:-2px}
+.mbrow{width:8px;height:2px;background:#23201B;border-radius:2px;transition:transform .25s}
+.mmouth{width:14px;height:7px;border-bottom:2.5px solid #23201B;border-radius:0 0 10px 10px;transition:all .25s}
+.mmouth.sad{border-bottom:none;border-top:2.5px solid #23201B;border-radius:10px 10px 0 0;margin-top:4px}
+.mmouth.shocked{width:10px;height:10px;border:2.5px solid #23201B;border-radius:50%;border-bottom-width:2.5px}
+@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+#bubble{position:fixed;right:24px;bottom:194px;z-index:61;max-width:260px;background:#fff;
+  border:2px solid var(--blue);border-radius:18px 18px 4px 18px;padding:14px 16px;
+  box-shadow:var(--shadow);display:none}
+#bubble.show{display:block;animation:pop .25s ease}
+#bubble .who{font-size:.68rem;letter-spacing:1px;text-transform:uppercase;color:var(--terra);
+  font-weight:700;margin-bottom:4px}
+#bubble p{font-family:'Fraunces',serif;font-size:.98rem;font-style:italic;line-height:1.4}
+@keyframes pop{from{opacity:0;transform:scale(.85) translateY(6px)}to{opacity:1;transform:none}}
+
+/* nav */
+#nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:520px;
+  background:rgba(255,248,238,.96);backdrop-filter:blur(12px);border-top:1px solid var(--line);
+  display:none;flex;z-index:50;padding:8px 2px calc(8px + env(safe-area-inset-bottom))}
+#nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;
+  font-size:.62rem;font-weight:600;color:var(--soft)}
+#nav button .ic{font-size:1.3rem;opacity:.7;transition:transform .15s}
+#nav button.on{color:var(--blue)}
+#nav button.on .ic{opacity:1;transform:translateY(-2px)}
+
+/* tabs */
+.tab{display:none}
+.tab.on{display:block;animation:fade .3s ease}
+.sectitle{display:flex;align-items:center;gap:8px;margin:0 0 12px}
+.sectitle .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;background:var(--terra)}
+
+/* counters */
+.counter{display:flex;align-items:center;justify-content:space-between;padding:13px 15px;
+  border:1.5px solid var(--line);border-radius:15px;background:#fff;margin-bottom:9px}
+.counter .lbl{font-weight:600;font-size:.9rem;flex:1;padding-right:10px}
+.counter .ct{display:flex;align-items:center;gap:12px}
+.counter .num{font-family:'Fraunces',serif;font-weight:600;font-size:1.3rem;min-width:22px;text-align:center}
+.plus{width:34px;height:34px;border-radius:50%;background:var(--blue);color:#fff;font-size:1.4rem;
+  display:flex;align-items:center;justify-content:center}
+.minus{width:30px;height:30px;border-radius:50%;background:var(--line);color:var(--soft);font-size:1.1rem;
+  display:flex;align-items:center;justify-content:center}
+
+/* inputs */
+textarea.note{width:100%;border:1.5px solid var(--line);border-radius:14px;padding:13px;
+  resize:none;min-height:64px;background:#fff}
+textarea.note:focus{border-color:var(--blue);outline:none}
+input.txt{width:100%;border:1.5px solid var(--line);border-radius:14px;padding:13px;background:#fff}
+input.txt:focus{border-color:var(--blue);outline:none}
+.logline{padding:11px 13px;background:#FBF6EC;border-radius:12px;margin-bottom:8px;font-size:.9rem;line-height:1.4}
+.logline .meta{font-size:.7rem;color:var(--soft);font-weight:700;margin-bottom:3px}
+
+/* bets */
+.bet{border:1.5px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px;background:#fff}
+.bet .q{font-weight:600;margin-bottom:10px;font-size:.95rem}
+.pickrow{display:flex;gap:8px;align-items:center;margin-bottom:7px}
+.pickrow .who{font-size:.7rem;font-weight:700;width:44px;color:var(--soft);flex-shrink:0}
+.pickrow button{flex:1;padding:9px 6px;border-radius:11px;border:1.5px solid var(--line);
+  font-weight:600;font-size:.82rem;transition:background .12s}
+.pickrow button.sel-her{background:#E07A5F;color:#fff;border-color:#E07A5F}
+.pickrow button.sel-him{background:var(--blue);color:#fff;border-color:var(--blue)}
+.pickrow button.sel-res{background:var(--mint);color:var(--ink);border-color:var(--mint)}
+
+/* photos */
+.photo-cell{border:1.5px dashed var(--line);border-radius:16px;padding:14px;margin-bottom:10px;background:#fff}
+.photo-cell.done{border-style:solid;border-color:var(--mint)}
+.photo-cell img{width:100%;border-radius:11px;margin-top:10px;display:block;max-height:260px;object-fit:cover}
+.photo-cell .cap{font-weight:600;font-size:.95rem}
+.photo-cell .hint{font-size:.8rem;color:var(--soft);margin-top:3px}
+
+/* timeline */
+.tl{position:relative;padding-left:26px}
+.tl:before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.tl .ev{position:relative;margin-bottom:16px}
+.tl .ev:before{content:"";position:absolute;left:-23px;top:5px;width:11px;height:11px;border-radius:50%;
+  background:var(--terra);border:2px solid var(--cream)}
+.tl .ev .t{font-weight:700;font-size:.82rem;color:var(--blue)}
+
+/* sync indicator */
+.sync-bar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:520px;
+  background:var(--mint);color:var(--ink);font-size:.78rem;font-weight:700;text-align:center;
+  padding:6px;z-index:80;display:none}
+.sync-bar.show{display:block}
+
+/* confetti */
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:70;overflow:hidden;display:none}
+.confetti.go{display:block}
+.cf{position:absolute;width:9px;height:14px;top:-20px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+
+.tag{display:inline-block;font-size:.7rem;font-weight:700;padding:3px 9px;border-radius:20px;
+  background:#F3F7FD;color:var(--blue)}
+.flagband{height:5px;border-radius:4px;display:flex;overflow:hidden;margin:8px 0}
+.flagband i{flex:1}
+.stat-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)}
+.stat-row:last-child{border-bottom:none}
+.recap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px}
+
+/* milestones */
+.milestone-row{display:flex;gap:10px;overflow-x:auto;padding:4px 0 10px;scrollbar-width:none}
+.milestone-row::-webkit-scrollbar{display:none}
+.ms-btn{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 12px;
+  border-radius:16px;border:1.5px solid var(--line);background:#fff;cursor:pointer;min-width:70px;
+  transition:background .12s,border-color .15s}
+.ms-btn.done{background:#E8F5E9;border-color:var(--mint)}
+.ms-btn .ms-icon{font-size:1.5rem}
+.ms-btn .ms-lbl{font-size:.62rem;font-weight:700;color:var(--soft);text-align:center;line-height:1.2}
+.ms-btn.done .ms-lbl{color:#388e3c}
+.ms-time{font-size:.56rem;color:#388e3c;font-weight:700}
+
+/* floating quote */
+#quickQuote{position:fixed;right:120px;bottom:106px;z-index:62;width:44px;height:44px;border-radius:50%;
+  background:var(--terra);color:#fff;font-size:1.1rem;box-shadow:0 4px 14px rgba(0,0,0,.22);
+  display:none;align-items:center;justify-content:center;border:3px solid #fff}
+#quickQuote.show{display:flex;animation:pop .2s ease}
+
+/* quick quote modal */
+#quickModal{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.5);display:none;align-items:flex-end}
+#quickModal.show{display:flex;animation:fade .2s ease}
+.qm-sheet{background:#fff;width:100%;max-width:520px;margin:0 auto;
+  border-radius:24px 24px 0 0;padding:24px 20px calc(40px + env(safe-area-inset-bottom))}
+
+/* kiss cam overlay */
+#kissCam{position:fixed;inset:0;z-index:95;background:rgba(0,0,0,.88);display:none;
+  flex-direction:column;align-items:center;justify-content:center;color:#fff;text-align:center;padding:30px}
+#kissCam.show{display:flex;animation:fade .3s ease}
+.kc-heart{font-size:4rem;animation:bob .8s ease-in-out infinite}
+</style>
+</head>
+<body>
+<div id="syncBar" class="sync-bar">syncing...</div>
+<div id="confetti" class="confetti"></div>
+<div id="bubble" onclick="this.classList.remove('show')">
+  <div class="who">Coach Ball says</div><p id="bubbleText"></p>
+</div>
+<div id="mascot-outer">
+  <div class="m-mid">
+    <div class="m-arm m-arm-l"></div>
+    <div id="mascot" onclick="tapMascot()">
+      <div id="mface">
+        <div class="meyes"><div class="meye" id="eyeL"></div><div class="meye" id="eyeR"></div></div>
+        <div class="mbrows"><div class="mbrow" id="browL"></div><div class="mbrow" id="browR"></div></div>
+        <div class="mmouth" id="mmouth"></div>
+      </div>
+    </div>
+    <div class="m-arm m-arm-r"></div>
+  </div>
+  <div class="m-legs">
+    <div class="m-leg"><div class="m-shin"></div><div class="m-shoe m-shoe-l"></div></div>
+    <div class="m-leg"><div class="m-shin"></div><div class="m-shoe"></div></div>
+  </div>
+</div>
+<button id="quickQuote" onclick="openQuickQuote()">💬</button>
+<div id="quickModal" onclick="closeQuickQuote()">
+  <div class="qm-sheet" onclick="event.stopPropagation()">
+    <div style="font-weight:700;font-size:1.05rem;margin-bottom:12px">💬 quick quote</div>
+    <input class="txt" id="qqWho" placeholder="who said it?" style="margin-bottom:8px"/>
+    <textarea class="note" id="qqText" placeholder="the quote..." rows="3" style="margin-bottom:12px"></textarea>
+    <button class="btn" onclick="submitQuickQuote()">add to the wall</button>
+    <button class="btn ghost" style="margin-top:8px" onclick="closeQuickQuote()">cancel</button>
+  </div>
+</div>
+<div id="kissCam">
+  <div class="kc-heart">💋</div>
+  <h1 style="font-family:'Fraunces',serif;font-size:2.2rem;margin:12px 0 6px">KISS CAM</h1>
+  <p style="font-size:.95rem;opacity:.85;max-width:280px;margin:0 auto 24px">you've been selected. no skipping. no overthinking. go.</p>
+  <button onclick="snapKissCam()" style="background:#fff;color:#1a1a2e;font-weight:700;padding:16px 28px;border-radius:16px;font-size:1rem;border:none;cursor:pointer">📸 take the shot</button>
+  <button onclick="closeKissCam()" style="background:transparent;color:rgba(255,255,255,.6);margin-top:14px;font-size:.88rem;border:none;cursor:pointer;display:block;width:100%">maybe next time 😅</button>
+  <input type="file" id="kissCamInput" accept="image/*" capture="user" style="display:none" onchange="snapKissCam(this)"/>
+</div>
+<nav id="nav">
+  <button data-tab="match" onclick="go('match')" class="on"><span class="ic">⚽</span>Match</button>
+  <button data-tab="his" onclick="go('his')"><span class="ic">📋</span>Pathak</button>
+  <button data-tab="hers" onclick="go('hers')"><span class="ic">✨</span>Rahman</button>
+  <button data-tab="play" onclick="go('play')"><span class="ic">🎲</span>Play</button>
+  <button data-tab="plan" onclick="go('plan')"><span class="ic">🗺️</span>Plan</button>
+</nav>
+<div id="app"></div>
+
+<script>
+/* ===================== CONSTANTS ===================== */
+const BIN_KEY = "$2a$10$E6Jn8poCYH6xAOvPjvlyZ..PRfQcpdc1xC5fGiDqYESzjELFjcTt6";
+const BIN_BASE = "https://api.jsonbin.io/v3/b";
+const FOOTBALL_KEY = "1dea5a1ab7ffdac6224fd8b95000e079";
+
+const QUOTES = [
+  "Be curious, not judgmental.",
+  "I believe in hope. I believe in believe.",
+  "You know what the happiest animal on Earth is? A goldfish. It's got a 10-second memory. Be a goldfish.",
+  "Taking on a challenge is a lot like riding a horse. If you're comfortable while doing it, you're probably doing it wrong.",
+  "There's two buttons I never like to hit: panic and snooze.",
+  "Doing the right thing is never the wrong thing.",
+  "Don't you dare settle for fine.",
+  "It's the lack of hope that comes and gets ya.",
+  "Heck, you could fill two internets with what I don't know about football.",
+  "I feel like we fell out of the lucky tree and hit every branch on the way down — in the best way.",
+  "Onward. Forward.",
+  "If you care about someone, and you got a little love in your heart, there ain't nothin' you can't get through together.",
+  "Football is life!",
+  "The goal is to be a goldfish. Ten seconds of memory, buddy.",
+  "I shouldn't bring an umbrella to a brainstorm.",
+  "You know what I love about believing in people? Sometimes they prove you right.",
+  "Every disadvantage has its advantage.",
+  "I think the truth is, deep down, we're all just lookin' to be seen."
+];
+const REACT = {
+  kickoff:["Here we go! I solemnly swear I know almost nothin' about this sport, but I am FIRED UP. 🔥","Kickoff baby. Onward. Forward!","Football is life and today it's YOUR life too. Let's get it!"],
+  colGoal:["FOOTBALL IS LIFE!!! Did y'all SEE that?! 🎉","That right there is what hope looks like. GOOOOL Colombia! 🇨🇴","I'm not crying, YOU'RE crying. GOAL!!!","GET IN! The Cafeteros are cooking today!"],
+  jorGoal:["Okay okay — be a goldfish. 10-second memory. We move on, together. 🐠","Jordan strikes. Every disadvantage has its advantage. Heads up.","That's alright — it's a long ol' game and we got each other."],
+  half:["Halftime! Go stretch them legs and refill that fancy cup. ☕","It ain't about the score at the half. It's about who shows up in the second.","Rest up, you two. Best seat in the house for the second half."],
+  full:["Win or lose, y'all showed up for each other today. That's the whole ballgame. ❤️","Final whistle. Now go get them tacos. The loser's buying. 🌮","Proud of ya. Both of ya. Now go live your life."],
+  card:["Ref's gotta ref. Don't let it live rent-free in your head.","Be a goldfish about it. 🐠","Whistle's just a fella with a job."],
+  var:["They're checkin' the tape. Patience — it's a virtue AND a Tom Petty song.","VAR: technology ruining beautiful moments since forever. Be a goldfish."]
+};
+const TEAMS={
+  col:{name:"Colombia",flag:"🇨🇴",nick:"Los Cafeteros",colors:["#FCD116","#003893","#CE1126"],
+    desc:"South American flair, high press, electric going forward. Huge, loud SoCal fanbase — expect drums and a sea of yellow."},
+  jor:{name:"Jordan",flag:"🇯🇴",nick:"Al-Nashama",colors:["#CE1126","#000000","#007A3D"],
+    desc:"Disciplined, organized, physical. Counter-attacking underdogs who reached the 2023 Asian Cup final — their best-ever result. Don't sleep on them."}
+};
+const PLAYERS=[
+  {t:"col",no:7,name:"Luis Díaz",blurb:"Liverpool winger. Fastest feet on the pitch — pure electricity down the left.",say:"Watch 7 — Luis Díaz. Liverpool guy, quickest feet out here, he'll cook the fullback all day."},
+  {t:"col",no:10,name:"James Rodríguez",blurb:"The captain. That golden left foot won the 2014 World Cup Golden Boot.",say:"10's James — that left foot won the Golden Boot in 2014, he sees passes nobody else even thinks about."},
+  {t:"col",no:9,name:"Rafael Santos Borré",blurb:"Hard-running striker, always on the shoulder of the last defender.",say:"Borré's gonna stretch the defense, he's always in behind."},
+  {t:"jor",no:7,name:"Musa Al-Tamari",blurb:"Plays in France. Jordan's whole counter-attack runs through his pace.",say:"Jordan's 7, Al-Tamari — plays in France, everything dangerous runs through him."},
+  {t:"jor",no:9,name:"Yazan Al-Naimat",blurb:"Target striker, holds up play so Jordan can build forward.",say:"Al-Naimat holds the ball up top so Jordan can get forward."}
+];
+const SAYINGS=[
+  "Colombia's pressing high — they wanna win the ball back in Jordan's half.",
+  "Jordan's parking the bus. They'd take a draw all day.",
+  "That's a tactical foul — breaking the counter on purpose.",
+  "Building from the back — nice and calm out of defense.",
+  "Al-Tamari's the out-ball for Jordan, everything releases through him.",
+  "Colombia plays with South American flair; Jordan's all discipline and shape.",
+  "They just switched to a back three — more bodies going forward now."
+];
+const HER_LOG=["Wrong-team cheer 📣","'He's literally so cute' 😭","Fake expertise moment 🎓","Random clap for nothing 👏","Stole the food 🍟","'Wait who's winning?' 🤔","Crowd-follow stand up 🙋","Commenting on the ref's shorts 👀","'Is the goalie allowed to do that?'"];
+const HIS_LOG=["Head in hands 😩","Yelled at the ref 😤","Drew a formation in the air ✋","Unprompted rule lecture 📖","Psychic foul prediction 🔮","Mentioned the academy / playing days ⚽","The proud 'she gets it' look 🥹","Dramatic sigh after a miss 😮‍💨","Stood up to coach from the stands 🧑‍💼"];
+const HER_PRED=["He yells at the ref 3+ times","He gives me an unprompted rule lecture","He predicts a foul before the whistle","He brings up his playing days","He puts his head in his hands","He draws a formation in the air"];
+const HIS_PRED=["She cheers for the wrong team","She says a player is cute","She claps for absolutely no reason","She steals my food","She asks 'wait who's winning?'","She stands up just because the crowd did"];
+const BETS=[
+  {q:"A player rolls 3+ times after a tiny tap",opts:["Yes","No"]},
+  {q:"Stadium successfully does The Wave",opts:["Yes","No"]},
+  {q:"A shirtless fan ends up on the big screen",opts:["Yes","No"]},
+  {q:"Someone squirts water bottle without touching lips",opts:["Yes","No"]},
+  {q:"More fans in Colombia yellow OR SDFC burgundy?",opts:["Yellow","Burgundy"]},
+  {q:"Total match goals",opts:["Under 2.5","Over 2.5"]},
+  {q:"Who finishes their souvenir cup first?",opts:["Her","Him"]},
+  {q:"Kiss cam catches someone mid-bite",opts:["Yes","No"]}
+];
+const PHOTOS=[
+  {id:"trolley",cap:"Trolley selfie",hint:"green line glam before you even arrive"},
+  {id:"firstlook",cap:"First look at the stadium",hint:"the 'we're really here' moment"},
+  {id:"cups",cap:"Souvenir cup cheers",hint:"clink the dated Colombia v Jordan cups"},
+  {id:"seats",cap:"Your seats + the scoreboard",hint:"get the pitch in the background"},
+  {id:"yell",cap:"Him mid-yell, hands in the air",hint:"catch the peak passion"},
+  {id:"formation",cap:"Drawing formations in the air",hint:"the coach energy"},
+  {id:"heartbreak",cap:"Head-in-hands heartbreak",hint:"after a near miss — pure gold"},
+  {id:"secret",cap:"The secret shot 🤫",hint:"him fully in his element, no idea you're taking it"},
+  {id:"proud",cap:"The proud-boyfriend look",hint:"right after you say something smart"},
+  {id:"facepaint",cap:"Most extreme face paint in the crowd",hint:"go hunting"},
+  {id:"drums",cap:"The Colombian drum section",hint:"video or photo, try to get the noise"},
+  {id:"yellow",cap:"The sea of yellow",hint:"from up high — the whole bowl"},
+  {id:"halftime",cap:"Halftime pose recreation",hint:"penalty run-up? keeper dive? you decide"}
+];
+const MILESTONES=[
+  {id:"left",icon:"🚆",label:"left for Old Town",react:"Onward. Forward. The trolley awaits! 🚆"},
+  {id:"tix",icon:"🎫",label:"tickets!",react:"OFFICIAL. We're doing this. No backing out now! 🎟️"},
+  {id:"food",icon:"🌮",label:"fan fest food",react:"Fueling up. Smart. Football runs on good food. 🌮"},
+  {id:"in",icon:"🏟️",label:"inside!",react:"YOU ARE IN THE STADIUM. Football is LIFE! ⚽🏟️"},
+  {id:"cup",icon:"🥤",label:"souvenir cup",react:"The souvenir cup. A treasure. A vessel. A memory. 🥤"},
+];
+const ITINERARY=[
+  {t:"2:35",x:"Leave. Laptop stays home — they won't let it past security anyway."},
+  {t:"~2:45",x:"Old Town Transit Center — park free on the Taylor St side of the lot."},
+  {t:"~2:50",x:"Eastbound Green Line trolley. ~15 min ride, ~$2.50 each on the PRONTO app."},
+  {t:"~3:05",x:"Step off at Stadium station. Buy fee-free tickets at the SE Gate box office window."},
+  {t:"3:10",x:"Fan fest on the East Lawn — South American food trucks, live drums, merch. Grab the split scarf here."},
+  {t:"3:30",x:"Through security (clear bag only — no laptops, no large bags). Find your seats."},
+  {t:"3:40",x:"Souvenir cups. Watch warm-ups near the corner flag."},
+  {t:"4:00",x:"KICKOFF ⚽"},
+  {t:"~4:45",x:"Halftime — stretch, refill, tally the prop bets."},
+  {t:"~5:00",x:"Second half."},
+  {t:"~5:50",x:"Final whistle."},
+  {t:"~6:30",x:"Back at Old Town. Loser of the prop bets buys tacos. 🌮"}
+];
+const QUIZ_Q=[
+  {q:"pick a vibe",a:[["chaos & flair","col"],["discipline & grit","jor"]]},
+  {q:"what's your underdog story?",a:[["the favorite living up to the hype","col"],["nobody-believed-in-us magic","jor"]]},
+  {q:"soundtrack of the afternoon",a:[["cumbia drums & reggaeton","col"],["quiet focus, then a roar","jor"]]},
+  {q:"how do you celebrate a win?",a:[["loud, dancing, yellow everywhere","col"],["earned the hard way, 1-0","jor"]]}
+];
+const ONB=[
+  {k:"free",q:"are you free from 3 to 6?",sub:"the window we're working with",
+   opts:[["all yours","blocked it off"],["mostly","a couple loose ends but basically yes"],["gotta flex","might need to duck out"]]},
+  {k:"work",q:"how much work is hanging over you?",sub:"be honest",
+   opts:[["none","free as a bird"],["a little","an email or two i could knock out first"],["a lot","brain is kinda full right now"]]},
+  {k:"energy",q:"what's the energy right now?",sub:"this second",
+   opts:[["hyped","let's GO"],["chill","good but low-key"],["low battery","need an easy on-ramp"]]}
+];
+
+/* ===================== STATE ===================== */
+let S = {
+  // jersey entry
+  jerseyRole:null, // "pathak" | "rahman"
+  pathakQs:{}, pathakQsDone:false, sheSaidYes:false,
+  // session
+  binId:null, role:null, // "host" or "guest"
+  // onboarding
+  onboarded:false, answers:{},
+  // tab
+  tab:"match",
+  // shared (synced)
+  score:{h:0,a:0}, statusText:"Kickoff 4:00 PM PDT", lastStatus:null,
+  events:[], seenEvents:[],
+  herLog:{}, hisLog:{},
+  herPred:{}, hisPred:{},
+  betHer:{}, betHim:{}, betResult:{},
+  commentary:[], quotes:[],
+  prediction:{},
+  ratings:{},
+  // local only
+  fixtureId:null, homeIsCol:true,
+  // synced but kept compact
+  photos:{}, milestones:{},
+  wagerHer:"", wagerHim:"", wagerRevealed:false,
+  lastSync:0, remoteTs:0
+};
+
+function ls(k,fb){try{const v=localStorage.getItem(k);return v?JSON.parse(v):fb}catch(e){return fb}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+
+function loadLocal(){
+  S.jerseyRole=ls("jerseyRole",null);
+  S.pathakQs=ls("pathakQs",{});
+  S.pathakQsDone=ls("pathakQsDone",false);
+  S.sheSaidYes=ls("sheSaidYes",false);
+  S.fixtureId=ls("fixtureId",null);
+  S.homeIsCol=ls("homeIsCol",true);
+  S.photos=ls("photos",{});
+  S.milestones=ls("milestones",{});
+  S.onboarded=ls("onboarded",false);
+  S.answers=ls("answers",{});
+  S.binId=ls("binId",null);
+  S.role=ls("role",null);
+  S.tab=ls("tab","match");
+}
+function saveLocal(){
+  lsSet("jerseyRole",S.jerseyRole);
+  lsSet("pathakQs",S.pathakQs);
+  lsSet("pathakQsDone",S.pathakQsDone);
+  lsSet("sheSaidYes",S.sheSaidYes);
+  lsSet("fixtureId",S.fixtureId);lsSet("homeIsCol",S.homeIsCol);
+  lsSet("photos",S.photos);lsSet("milestones",S.milestones);
+  lsSet("onboarded",S.onboarded);lsSet("answers",S.answers);
+  lsSet("binId",S.binId);lsSet("role",S.role);lsSet("tab",S.tab);
+}
+
+/* ===================== JSONBIN SYNC ===================== */
+const SYNC_FIELDS=["score","statusText","lastStatus","events","seenEvents","herLog","hisLog",
+  "herPred","hisPred","betHer","betHim","betResult","commentary","quotes","prediction","ratings",
+  "wagerHer","wagerHim","wagerRevealed","milestones"];
+// photos synced separately with size check (added dynamically in pushSync)
+
+function getSyncPayload(){
+  const o={ts:Date.now()};
+  SYNC_FIELDS.forEach(k=>o[k]=S[k]);
+  return o;
+}
+function applySyncPayload(o){
+  if(!o||!o.ts)return;
+  if(o.ts<=S.remoteTs)return; // already have this
+  S.remoteTs=o.ts;
+  SYNC_FIELDS.forEach(k=>{if(o[k]!==undefined)S[k]=o[k];});
+  if(o.photos){Object.assign(S.photos,o.photos);lsSet("photos",S.photos);}
+}
+
+let syncDebounce=null;
+async function pushSync(){
+  if(!S.binId)return;
+  clearTimeout(syncDebounce);
+  syncDebounce=setTimeout(async()=>{
+    try{
+      showSyncBar("saving...");
+      const base=getSyncPayload();
+      // try to include photos — drop them if payload exceeds ~85KB
+      const withPhotos={...base,photos:S.photos};
+      const body=JSON.stringify(withPhotos).length<87000?JSON.stringify(withPhotos):JSON.stringify(base);
+      await fetch(`${BIN_BASE}/${S.binId}`,{
+        method:"PUT",headers:{"Content-Type":"application/json","X-Master-Key":BIN_KEY},
+        body
+      });
+      hideSyncBar();
+    }catch(e){hideSyncBar();}
+  },600);
+}
+
+let pollInterval=null;
+async function pollSync(){
+  if(!S.binId)return;
+  try{
+    const r=await fetch(`${BIN_BASE}/${S.binId}/latest`,{headers:{"X-Master-Key":BIN_KEY}});
+    const j=await r.json();
+    const payload=j.record;
+    if(payload&&payload.ts>S.remoteTs){
+      const prevScore=JSON.stringify(S.score);
+      const prevEvents=S.events.length;
+      applySyncPayload(payload);
+      // check for new goal events
+      if(S.events.length>prevEvents){
+        const newest=S.events[S.events.length-1];
+        if(newest&&newest.icon==="⚽"){
+          const colScored=newest.title.toLowerCase().includes("colombia");
+          confetti();flashMascot(rand(colScored?REACT.colGoal:REACT.jorGoal));
+        }
+      }
+      if(JSON.stringify(S.score)!==prevScore&&document.getElementById("tab-match")){
+        paintScoreboard();
+      }
+      softRender();
+    }
+  }catch(e){}
+}
+
+function startPolling(){
+  clearInterval(pollInterval);
+  pollInterval=setInterval(pollSync,5000);
+}
+
+async function createBin(){
+  showSyncBar("creating session...");
+  const r=await fetch(BIN_BASE,{
+    method:"POST",
+    headers:{"Content-Type":"application/json","X-Master-Key":BIN_KEY,
+      "X-Bin-Name":"touchdown-game-day","X-Bin-Private":"true"},
+    body:JSON.stringify(getSyncPayload())
+  });
+  const j=await r.json();
+  hideSyncBar();
+  return j.metadata&&j.metadata.id?j.metadata.id:null;
+}
+
+async function joinBin(id){
+  showSyncBar("joining...");
+  const r=await fetch(`${BIN_BASE}/${id}/latest`,{headers:{"X-Master-Key":BIN_KEY}});
+  const j=await r.json();
+  hideSyncBar();
+  if(j.record){applySyncPayload(j.record);return true;}
+  return false;
+}
+
+function showSyncBar(msg){
+  const b=document.getElementById("syncBar");b.textContent=msg;b.classList.add("show");
+}
+function hideSyncBar(){
+  setTimeout(()=>document.getElementById("syncBar").classList.remove("show"),1200);
+}
+
+/* ===================== ROUTER ===================== */
+const $app=()=>document.getElementById("app");
+
+function render(){
+  const nav=document.getElementById("nav");
+  const hide=()=>{nav.style.display="none";document.getElementById("quickQuote")?.classList.remove("show");};
+  const show=()=>nav.style.display="flex";
+  // step 1: jersey picker
+  if(!S.jerseyRole){renderJerseyPicker();hide();return;}
+  // step 2: pathak flow
+  if(S.jerseyRole==="pathak"){
+    if(!S.pathakQsDone){renderPathakOnboard();hide();return;}
+    if(!S.sheSaidYes){renderSurpriseReveal();hide();return;}
+    if(!S.binId){renderHostSession();hide();return;}
+    if(!S.onboarded){S.onboarded=true;saveLocal();}  // he planned the day — skip re-asking
+  }
+  // step 3: rahman flow
+  if(S.jerseyRole==="rahman"){
+    if(!S.binId){renderRahmanJoin();hide();return;}
+  }
+  show();
+  renderMain();
+}
+
+function go(tab){
+  S.tab=tab;saveLocal();
+  document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.tab===tab));
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on",t.id==="tab-"+tab));
+  window.scrollTo(0,0);
+}
+
+function softRender(){
+  // re-paint in-place without full rebuild
+  paintScoreboard();
+  const cl=document.getElementById("commList");if(cl)cl.innerHTML=renderComm();
+  const qw=document.getElementById("quoteWall");if(qw)qw.innerHTML=renderQuotes();
+  tallyBets();
+  HER_LOG.forEach((_,i)=>{const el=document.getElementById("her-"+i);if(el)el.textContent=S.herLog[i]||0;});
+  HIS_LOG.forEach((_,i)=>{const el=document.getElementById("his-"+i);if(el)el.textContent=S.hisLog[i]||0;});
+}
+
+/* ===================== JERSEY PICKER ===================== */
+function jerseyHTML(col,sleeve,textCol,name,num){
+  return `<div class="j-wrap">
+    <div class="j-sleeve-l" style="background:${sleeve}"></div>
+    <div class="j-sleeve-r" style="background:${sleeve}"></div>
+    <div class="j-body" style="background:${col};position:relative">
+      <div class="j-collar" style="background:${sleeve}30"></div>
+      <div style="position:absolute;bottom:12px;left:0;right:0;text-align:center">
+        <div style="font-size:.58rem;font-weight:900;letter-spacing:.18em;color:${textCol};opacity:.85">${name}</div>
+        <div style="font-size:2.1rem;font-weight:900;line-height:1;color:${textCol};opacity:.9">${num}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderJerseyPicker(){
+  $app().innerHTML=`<div class="screen center" style="padding-top:44px">
+    <div class="eyebrow">june 7 · snapdragon stadium</div>
+    <h1 class="h1" style="margin:10px 0 4px;font-size:1.9rem">who's suiting up?</h1>
+    <p class="muted" style="font-size:.88rem;margin-bottom:8px">tap your jersey to get started</p>
+    <div class="jersey-stage">
+      <button class="jersey-btn" onclick="pickJersey('pathak')">
+        ${jerseyHTML("#FCD116","#003087","#1a2e6b","PATHAK","27")}
+        <div class="jersey-tag" style="color:#003087;margin-top:6px">Pathak</div>
+      </button>
+      <button class="jersey-btn" onclick="pickJersey('rahman')">
+        ${jerseyHTML("#c9522a","#8b3518","#fff","RAHMAN","6")}
+        <div class="jersey-tag" style="color:#c9522a;margin-top:6px">Rahman</div>
+      </button>
+    </div>
+    <p class="muted" style="font-size:.76rem;margin-top:6px">⚽ foulplay · colombia vs jordan</p>
+  </div>`;
+}
+
+function pickJersey(who){
+  S.jerseyRole=who;
+  if(who==="rahman"){S.role="guest";}
+  if(who==="pathak"){S.role="host";}
+  saveLocal();
+  render();
+}
+
+/* ===================== PATHAK ONBOARDING ===================== */
+const PATHAK_QS=[
+  {key:"energy",q:"real talk — what's your energy today?",opts:[
+    ["🔋 locked in, let's go","locked in"],
+    ["😊 solid, good vibes","solid"],
+    ["😴 running on fumes","fumes"],
+    ["☕ depends on the coffee","depends"]
+  ]},
+  {key:"work",q:"any work thoughts floating around back there?",opts:[
+    ["nah, i'm fully present 🧘","none"],
+    ["barely — it can wait","barely"],
+    ["a little bit yeah","little"],
+    ["honestly kinda stressed","stressed"]
+  ]},
+  {key:"move",q:"how bold are you feeling today?",opts:[
+    ["extremely bold, full send 🚀","bold"],
+    ["pretty bold","pretty bold"],
+    ["medium bold like a medium roast","medium"],
+    ["we'll see how the day goes","we'll see"]
+  ]}
+];
+let pqStep=0;
+
+
+function pqPick(key,val){
+  S.pathakQs[key]=val;pqStep++;
+  if(pqStep>=PATHAK_QS.length){
+    S.pathakQsDone=true;saveLocal();
+    // silently pre-create session so code bakes into the SMS
+    if(!S.binId){
+      renderPathakOnboard(); // shows a "setting up..." placeholder while we wait
+      createBin().then(id=>{
+        if(id){S.binId=id;S.role="host";saveLocal();startPolling();}
+        render();
+      }).catch(()=>render());
+    }else{render();}
+  }else{saveLocal();renderPathakOnboard();}
+}
+
+function renderPathakOnboard(){
+  if(pqStep<PATHAK_QS.length){
+    const q=PATHAK_QS[pqStep];
+    $app().innerHTML=`<div class="screen">
+      <div class="progress">${PATHAK_QS.map((_,i)=>`<i class="${i<pqStep?'fill':''}"></i>`).join("")}</div>
+      <div class="eyebrow">PATHAK · question ${pqStep+1} of ${PATHAK_QS.length}</div>
+      <h1 class="h1" style="margin:8px 0 22px;font-size:1.5rem">${q.q}</h1>
+      ${q.opts.map(([label,val])=>`<button class="opt" onclick="pqPick('${q.key}','${val}')">${label}</button>`).join("")}
+    </div>`;
+  }else{
+    // questions done, session creating in background
+    $app().innerHTML=`<div class="screen center">
+      <div style="font-size:2rem;animation:bob 1s ease-in-out infinite">⚽</div>
+      <h2 class="h2" style="margin:16px 0 8px">setting things up...</h2>
+      <p class="muted">one sec while we build the session</p>
+    </div>`;
+  }
+}
+
+/* ===================== SURPRISE REVEAL ===================== */
+function buildSurpriseText(){
+  const e=S.pathakQs.energy||"solid";
+  const w=S.pathakQs.work||"none";
+  const b=S.pathakQs.move||"bold";
+  const opener=e==="locked in"
+    ?"okay so. i'm not usually good at this but i feel weirdly brave today and i need to say something before that goes away —"
+    :e==="fumes"
+    ?"okay so. i'm running on approximately zero sleep but one specific thought has been very loud all morning and i think it wants to be said —"
+    :e==="depends"
+    ?"okay so. the coffee kicked in and so did a feeling and now here we are —"
+    :"okay so. i need to say something and if i think about it too long i won't say it so —";
+  const workBit=w==="stressed"||w==="little"
+    ?"\n\ni know i've had a lot going on in my head lately. i want today to be different. like intentionally put-the-phone-down different."
+    :"";
+  const coreBit=`\n\ni really want to hang out with you today\n\nlike... a lot\n\nalso separately: i love soccer. like. genuinely a lot.\n\nand then it hit me — what if both of those things happened at the same time\n\nmy brain genuinely short-circuited for a second thinking about it 😭\n\ncolombia 🇨🇴 is playing jordan 🇯🇴 today at snapdragon stadium 🏟️ kickoff is at 4pm and i've already looked up the trolley route because that's the kind of person i apparently am now\n\ni also maybe built us a little app for the afternoon because i wanted today to actually feel like a thing and not just a thing we did`;
+  const closer=b==="bold"||b==="pretty bold"
+    ?"\n\nso. do you wanna? with me? today? ⚽\n\n(you don't have to say yes. but also please say yes. okay bye 💛)"
+    :"\n\nso. do you wanna? with me? today? ⚽\n\n(no pressure. there's a little pressure. i'm bad at this. you know this. please say yes anyway 💛)";
+  return opener+workBit+coreBit+closer;
+}
+
+function surpriseSMSLink(txt){
+  return `sms:9166777839;body=${encodeURIComponent(txt)}`;
+}
+
+function renderSurpriseReveal(){
+  const txt=buildSurpriseText();
+  const smsUrl=surpriseSMSLink(txt);
+  $app().innerHTML=`<div class="screen">
+    <div class="eyebrow center">coach ball's got a message for you 💌</div>
+    <h2 class="h2" style="text-align:center;margin:10px 0 14px">your move, Pathak</h2>
+    <div class="msg-bubble">${txt.replace(/\n/g,"<br/>")}</div>
+    <div class="spacer"></div>
+    <a class="btn alt" href="${smsUrl}" style="text-decoration:none">💌 open in messages →</a>
+    <p class="muted center" style="font-size:.76rem;margin:8px 0 18px">opens a pre-written text to Rahman · edit before sending</p>
+    <button class="btn" onclick="renderSheYes()">she said YES 💛</button>
+    <button class="btn ghost" style="margin-top:10px" onclick="renderSheNo()">still working on it... 😬</button>
+  </div>`;
+}
+
+function renderSheYes(){
+  S.sheSaidYes=true;saveLocal();
+  const codeBody=S.binId
+    ?`hey! so i might have built us a little app for today 😭⚽\n\nopen this on your phone: https://sr2527.github.io/lalo/foulplay/\n\nthen tap the Rahman jersey and enter this code to join:\n\n${S.binId}`
+    :"hey! open foulplay on your phone and enter this code to join:\n\n(loading your code — check back in a sec)";
+  const codeSMS=`sms:9166777839;body=${encodeURIComponent(codeBody)}`;
+  $app().innerHTML=`<div class="screen">
+    <div style="font-size:2.8rem;text-align:center">🎉</div>
+    <h2 class="h2" style="text-align:center;margin:12px 0 6px">SHE SAID YES.</h2>
+    <p class="muted center" style="margin-bottom:24px;font-size:.9rem">now send her the code so she can join the app</p>
+    <div class="msg-bubble" style="font-size:.88rem">${codeBody.replace(/\n/g,"<br/>")}</div>
+    <div class="spacer"></div>
+    <a class="btn alt" href="${codeSMS}" style="text-decoration:none">📲 send her the code →</a>
+    <p class="muted center" style="font-size:.76rem;margin:8px 0 18px">opens a pre-written text · edit before sending</p>
+    <button class="btn" onclick="S.sheSaidYes=true;saveLocal();render()">she's got it — let's go ⚽</button>
+  </div>`;
+  flashMascot("YESSSSS! She said yes! Coach Ball is so proud of you. 🎉");
+}
+
+function buildPleadingText(){
+  const b=S.pathakQs.move||"bold";
+  const closer=b==="bold"||b==="pretty bold"
+    ?"\n\nso i'm asking again. do you wanna come with me today?\n\n(coach ball is rooting for you. i'm rooting for you. we're all rooting for you.) 💛⚽"
+    :"\n\nso. still asking. very kindly. please? today? with me?\n\n(i built a mascot. his name is Coach Ball. he's been waiting patiently for your answer.) 💛⚽";
+  return `okay wait. i know.\n\nbut can i tell you the real reason i really really want to go?\n\nnot just the soccer (though. colombia. come on.)\n\nit's that i genuinely can't think of another person i'd rather sit in a stadium with and lose my mind over a sport with\n\nlike i actually surprised myself a little when i realized that\n\ni built us a little app for today. with a mascot and everything. and a live scoreboard. and bets. and a quote wall.\n\nthat's how much i want this afternoon to happen.${closer}`;
+}
+
+function renderSheNo(){
+  const txt=buildPleadingText();
+  const smsUrl=surpriseSMSLink(txt);
+  $app().innerHTML=`<div class="screen">
+    <div style="font-size:2.2rem;text-align:center">😤💛</div>
+    <h2 class="h2" style="text-align:center;margin:10px 0 14px">okay. try this one.</h2>
+    <div class="msg-bubble" style="font-size:.88rem">${txt.replace(/\n/g,"<br/>")}</div>
+    <div class="spacer"></div>
+    <a class="btn alt" href="${smsUrl}" style="text-decoration:none">💌 send this one →</a>
+    <p class="muted center" style="font-size:.76rem;margin:8px 0 18px">opens in messages · edit before sending</p>
+    <button class="btn" onclick="renderSheYes()">she said YES 💛</button>
+    <button class="btn ghost" style="margin-top:10px" onclick="renderSurpriseReveal()">← back to the first text</button>
+  </div>`;
+}
+
+/* ===================== HOST SESSION (PATHAK) ===================== */
+function renderHostSession(){
+  $app().innerHTML=`<div class="screen center">
+    <div class="eyebrow">step 2 of 2</div>
+    <h1 class="h1" style="margin:10px 0 8px">create the session</h1>
+    <p class="muted" style="max-width:280px;margin:0 auto 24px;font-size:.9rem">
+      This gives you a code to share with Rahman so you're synced on the same game.
+    </p>
+    <button class="btn alt" onclick="doCreate()" id="createBtn">create session →</button>
+    <p class="muted" style="font-size:.76rem;margin-top:10px">share the code with Rahman when it appears</p>
+  </div>`;
+}
+
+/* ===================== RAHMAN JOIN ===================== */
+function renderRahmanJoin(){
+  $app().innerHTML=`<div class="screen">
+    <div class="eyebrow center">welcome, Rahman 🌟</div>
+    <h1 class="h1 center" style="margin:8px 0 6px">enter the code</h1>
+    <p class="muted center" style="margin-bottom:18px;font-size:.9rem">Pathak has a code for you — paste it below to join the game.</p>
+    <input class="join-input" id="joinCode" placeholder="paste code" autocomplete="off" autocorrect="off" autocapitalize="off"/>
+    <div class="spacer"></div>
+    <button class="btn" id="joinBtn" onclick="doJoin()">let's go →</button>
+  </div>`;
+}
+
+/* ===================== SESSION SCREEN ===================== */
+let sessionMode="start"; // "start" | "joining"
+
+function renderSessionScreen(){
+  if(sessionMode==="joining"){
+    $app().innerHTML=`<div class="screen">
+      <div class="eyebrow center">joining a session</div>
+      <h1 class="h1 center" style="margin:8px 0 6px">enter the code</h1>
+      <p class="muted center" style="margin-bottom:18px;font-size:.9rem">They'll see it on their phone after they create the session.</p>
+      <input class="join-input" id="joinCode" placeholder="paste code" autocomplete="off" autocorrect="off" autocapitalize="off"/>
+      <div class="spacer"></div>
+      <button class="btn" id="joinBtn" onclick="doJoin()">join →</button>
+      <button class="btn ghost" style="margin-top:10px" onclick="sessionMode='start';renderSessionScreen()">← back</button>
+    </div>`;
+    return;
+  }
+  $app().innerHTML=`<div class="screen center">
+    <div style="font-size:3.6rem">⚽</div>
+    <div class="eyebrow" style="margin-top:12px">game day, june 7</div>
+    <h1 class="h1" style="margin:8px 0 4px">foulplay.</h1>
+    <p class="muted" style="max-width:280px;margin:0 auto 28px;font-size:.92rem">
+      Colombia vs. Jordan · Snapdragon Stadium · 4:00 PM
+    </p>
+    <button class="btn alt" onclick="doCreate()" id="createBtn">create a session</button>
+    <p class="muted" style="font-size:.78rem;margin:8px 0">tap this on the first phone</p>
+    <div class="divider"></div>
+    <button class="btn ghost" onclick="sessionMode='joining';renderSessionScreen()">join with a code</button>
+    <p class="muted" style="font-size:.78rem;margin-top:8px">tap this on the second phone</p>
+  </div>`;
+}
+
+async function doCreate(){
+  document.getElementById("createBtn").textContent="creating...";
+  document.getElementById("createBtn").disabled=true;
+  try{
+    const id=await createBin();
+    if(!id){alert("Couldn't create session — check wifi and try again.");return;}
+    S.binId=id;S.role="host";
+    saveLocal();startPolling();
+    render();
+    flashMascot("Session created! Share the code with the other phone. I'll be here.");
+  }catch(e){alert("Network error. Try again!");document.getElementById("createBtn").disabled=false;document.getElementById("createBtn").textContent="create session →";}
+}
+
+async function doJoin(){
+  const code=document.getElementById("joinCode").value.trim();
+  if(!code){alert("Paste the session code from the other phone.");return;}
+  document.getElementById("joinBtn").textContent="joining...";
+  document.getElementById("joinBtn").disabled=true;
+  try{
+    const ok=await joinBin(code);
+    if(!ok){alert("Couldn't find that session — double check the code.");document.getElementById("joinBtn").disabled=false;document.getElementById("joinBtn").textContent="join →";return;}
+    S.binId=code;S.role="guest";S.onboarded=true;
+    saveLocal();startPolling();
+    findFixture().then(()=>pollNow());
+    render();go(S.tab||"match");
+    flashMascot("You're in, Rahman! Football is life, baby. Let's get it. 🏟️");
+  }catch(e){alert("Network error.");document.getElementById("joinBtn").disabled=false;document.getElementById("joinBtn").textContent="join →";}
+}
+
+/* ===================== ONBOARDING ===================== */
+let onbStep=0;
+
+function renderOnboard(step){
+  onbStep=step;
+  if(step===0){
+    $app().innerHTML=`<div class="screen center">
+      <div style="font-size:3.4rem">⚽</div>
+      <div class="eyebrow" style="margin-top:14px">coach ball here</div>
+      <h1 class="h1" style="margin:10px 0 8px">before kickoff</h1>
+      <p class="muted" style="max-width:300px;margin:0 auto 24px;font-size:.9rem">
+        I'm gonna ask you three quick things, then set you up with a plan for the afternoon.
+      </p>
+      <div class="card center" style="margin-bottom:18px">
+        <div class="muted" style="font-size:.8rem;margin-bottom:6px">your session code — share this</div>
+        <div class="code-box" onclick="copyCode()">${S.binId}</div>
+        <p class="muted" style="font-size:.78rem">tap to copy · send to the second phone</p>
+      </div>
+      <button class="btn" onclick="renderOnboard(1)">let's go →</button>
+    </div>`;return;
+  }
+  if(step<=ONB.length){
+    const c=ONB[step-1];
+    $app().innerHTML=`<div class="screen">
+      <div class="progress">${ONB.map((_,i)=>`<i class="${i<step?'fill':''}"></i>`).join("")}</div>
+      <div class="eyebrow">question ${step} of ${ONB.length}</div>
+      <h1 class="h1" style="margin:6px 0 4px">${c.q}</h1>
+      <p class="muted" style="margin-bottom:20px">${c.sub}</p>
+      ${c.opts.map((o,i)=>`<button class="opt ${S.answers[c.k]===i?'pick':''}" onclick="pickOnb('${c.k}',${i})">
+        ${o[0]}<div class="sub">${o[1]}</div></button>`).join("")}
+    </div>`;return;
+  }
+  // plan screen
+  const a=S.answers;
+  const leaveTime=a.work===2?"2:20":"2:30";
+  const lines=[];
+  if(a.work===2)lines.push("You've got a full plate — do the work at home or a cafe first, then go hands-free. No laptop at the stadium anyway (security won't let it through).");
+  else if(a.work===1)lines.push("Knock out those emails before you leave. Lock the laptop away and step out empty-handed.");
+  else lines.push("Nothing hanging over you — pure date mode. 🙌");
+  if(a.energy===0)lines.push("You're hyped — lean into the fan fest, get there for the 3:05 outdoor party vibe.");
+  else if(a.energy===2)lines.push("Low battery? Keep it gentle. Cafe or couch first, easy trolley ride, let the crowd energy carry you in.");
+  else lines.push("Chill suits today. No rush, just flow.");
+  if(a.free===2)lines.push("Since you might need to flex — grab an aisle seat so ducking out is painless if needed.");
+  $app().innerHTML=`<div class="screen">
+    <div class="eyebrow center">your afternoon, sorted</div>
+    <h1 class="h1 center" style="margin:8px 0 16px">here's the play 🟡</h1>
+    <div class="card">
+      <div style="font-family:'Fraunces',serif;font-size:1.05rem;margin-bottom:10px">
+        Leave around <b>${leaveTime}</b>, aim to arrive ~<b>3:05</b>
+      </div>
+      ${lines.map(l=>`<p style="margin:8px 0;font-size:.92rem">• ${l}</p>`).join("")}
+      <div class="divider"></div>
+      <p class="muted" style="font-size:.84rem">Full timeline is in the Plan tab. The good stuff is waiting inside.</p>
+    </div>
+    <div class="spacer"></div>
+    <button class="btn alt" onclick="finishOnb()">take me in →</button>
+  </div>`;
+}
+function pickOnb(k,i){S.answers[k]=i;saveLocal();renderOnboard(onbStep+1);}
+function finishOnb(){
+  S.onboarded=true;saveLocal();
+  render();go("match");
+  flashMascot(rand(QUOTES));
+}
+function copyCode(){
+  navigator.clipboard&&navigator.clipboard.writeText(S.binId);
+  showSyncBar("code copied to clipboard!");
+  setTimeout(hideSyncBar,1500);
+}
+
+/* ===================== MAIN RENDER ===================== */
+function renderMain(){
+  $app().innerHTML=`
+    ${tabMatch()}
+    ${tabHis()}
+    ${tabHers()}
+    ${tabPlay()}
+    ${tabPlan()}
+  `;
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on",t.id==="tab-"+S.tab));
+  document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.tab===S.tab));
+  paintScoreboard();
+  tallyBets();
+  updatePhotoCount();
+  document.getElementById("quickQuote")?.classList.add("show");
+}
+
+/* ===================== MATCH TAB ===================== */
+function milestoneRow(){
+  return `<div class="milestone-row" id="msRow">
+    ${MILESTONES.map(m=>`
+      <button class="ms-btn ${S.milestones[m.id]?'done':''}" onclick="tapMilestone('${m.id}')">
+        <span class="ms-icon">${m.icon}</span>
+        <span class="ms-lbl">${m.label}</span>
+        ${S.milestones[m.id]?`<span class="ms-time">${S.milestones[m.id]}</span>`:''}
+      </button>`).join("")}
+  </div>`;
+}
+
+function tapMilestone(id){
+  if(S.milestones[id])return; // already hit
+  S.milestones[id]=nowClock();
+  syncSave();
+  const m=MILESTONES.find(x=>x.id===id);
+  if(m)flashMascot(m.react);
+  const row=document.getElementById("msRow");
+  if(row)row.outerHTML=milestoneRow();
+  // kiss cam: random chance after they're inside (10% chance on any milestone)
+  if(id==="in"||id==="cup"||id==="food"){if(Math.random()<0.25)setTimeout(triggerKissCam,3000);}
+}
+
+function tabMatch(){return `<section id="tab-match" class="tab pad">
+  <div class="sectitle"><span class="dot"></span><span class="eyebrow">live from snapdragon</span></div>
+  <p class="muted" style="font-size:.8rem;margin-bottom:10px">tap each milestone as you hit it</p>
+  ${milestoneRow()}
+  <div id="scoreboard"></div>
+  <div id="halftimeCard"></div>
+  <div class="spacer"></div>
+  <div id="liveControls"></div>
+  <div class="spacer"></div>
+  <div class="card">
+    <div class="h2" style="font-size:1.05rem;margin-bottom:8px">match feed</div>
+    <div id="feed"></div>
+  </div>
+</section>`;}
+
+function paintScoreboard(){
+  const sb=document.getElementById("scoreboard");if(!sb)return;
+  const g=S.score||{h:0,a:0};
+  const live=S.lastStatus&&["1H","2H","ET"].includes(S.lastStatus);
+  sb.innerHTML=`<div class="scoreboard" style="margin-top:10px">
+    <div class="sb-status">${live?'<span class="live-dot"></span>':''}${S.statusText||"Kickoff 4:00 PM PDT"}</div>
+    <div class="sb-row">
+      <div class="sb-team"><div class="sb-flag">🇨🇴</div><div class="sb-name">Colombia</div></div>
+      <div class="sb-score">${g.h}</div>
+      <div style="opacity:.5;font-size:.8rem">–</div>
+      <div class="sb-score">${g.a}</div>
+      <div class="sb-team"><div class="sb-flag">🇯🇴</div><div class="sb-name">Jordan</div></div>
+    </div>
+  </div>`;
+  // halftime card
+  const hc=document.getElementById("halftimeCard");
+  if(hc){
+    if(S.lastStatus==="HT"){
+      const herTotal=Object.values(S.herLog||{}).reduce((a,b)=>a+b,0);
+      const hisTotal=Object.values(S.hisLog||{}).reduce((a,b)=>a+b,0);
+      const commSoFar=(S.commentary||[]).length;
+      hc.innerHTML=`<div class="card" style="margin:12px 0;background:linear-gradient(135deg,#163C6E,#0E2746);color:#fff">
+        <div style="font-size:.7rem;letter-spacing:2px;text-transform:uppercase;opacity:.8;margin-bottom:8px">🟡 halftime check-in</div>
+        <div style="font-family:'Fraunces',serif;font-size:1.2rem;margin-bottom:10px">"${rand(REACT.half)}"</div>
+        <div class="divider" style="border-color:rgba(255,255,255,.2)"></div>
+        <div style="font-size:.88rem;margin-top:10px;display:flex;gap:16px;flex-wrap:wrap">
+          <div>😂 Rahman moments logged: <b>${herTotal}</b></div>
+          <div>📋 Pathak takes: <b>${commSoFar}</b></div>
+          <div>🥹 Pathak moments: <b>${hisTotal}</b></div>
+        </div>
+        <div class="divider" style="border-color:rgba(255,255,255,.2)"></div>
+        <p style="font-size:.82rem;opacity:.9">Settle a prop bet. Refill the cup. Take the halftime pose photo. You've got 15 minutes.</p>
+      </div>`;
+    }else{hc.innerHTML="";}
+  }
+  const lc=document.getElementById("liveControls");if(!lc)return;
+  lc.innerHTML=`<div class="row" style="flex-wrap:wrap;gap:8px">
+    <button class="chip" onclick="pollNow()">↻ refresh</button>
+    <button class="chip" onclick="demoGoal()">demo goal 🎉</button>
+    <button class="chip" onclick="manualScore()">edit score</button>
+  </div>
+  <p class="muted" style="font-size:.76rem;margin-top:8px">Live feed active 📡 · auto-syncs every 90s</p>`;
+  renderFeed();
+}
+function renderFeed(){
+  const f=document.getElementById("feed");if(!f)return;
+  const ev=S.events||[];
+  if(!ev.length){f.innerHTML=`<p class="muted" style="font-size:.88rem">No events yet — Coach Ball'll holler when something happens. ⚽</p>`;return;}
+  f.innerHTML=ev.slice().reverse().map(e=>`<div class="feed-item">
+    <div class="min">${e.min}'</div>
+    <div><b>${e.icon||""} ${esc(e.title)}</b><div class="muted" style="font-size:.8rem">${esc(e.detail||"")}</div></div>
+  </div>`).join("");
+}
+
+/* ===================== HIS TAB ===================== */
+function tabHis(){return `<section id="tab-his" class="tab pad">
+  <div class="sectitle"><span class="dot"></span><span class="eyebrow">the analyst's corner</span></div>
+  <h2 class="h2">Pathak 📋</h2>
+  <p class="muted" style="font-size:.88rem;margin-bottom:16px">Predictions, live tactical reads, and a log of Rahman's finest moments.</p>
+
+  <div class="card">
+    <div style="font-weight:700;margin-bottom:10px">🔮 pre-match call</div>
+    <label class="muted" style="font-size:.8rem">Predicted scoreline</label>
+    <input class="txt" style="margin:5px 0 12px" value="${esc(S.prediction.score||'')}"
+      placeholder="e.g. Colombia 2–1 Jordan" onchange="S.prediction.score=this.value;syncSave()"/>
+    <label class="muted" style="font-size:.8rem">First goalscorer</label>
+    <input class="txt" style="margin:5px 0 12px" value="${esc(S.prediction.scorer||'')}"
+      placeholder="who finds the net first?" onchange="S.prediction.scorer=this.value;syncSave()"/>
+    <label class="muted" style="font-size:.8rem">Colombia's formation</label>
+    <input class="txt" style="margin:5px 0 0" value="${esc(S.prediction.shape||'')}"
+      placeholder="4-2-3-1? back three?" onchange="S.prediction.shape=this.value;syncSave()"/>
+  </div>
+
+  <div class="spacer"></div>
+  <div class="card">
+    <div style="font-weight:700;margin-bottom:8px">🎙️ live tactical log</div>
+    <p class="muted" style="font-size:.8rem;margin-bottom:10px">Drop a read — timestamps itself.</p>
+    <textarea class="note" id="commIn" placeholder="'Colombia's overloading the left, Díaz is cooking the fullback...'"></textarea>
+    <div class="spacer"></div>
+    <button class="btn" onclick="addComm()">log it</button>
+    <div id="commList" style="margin-top:14px">${renderComm()}</div>
+  </div>
+
+  <div class="spacer"></div>
+  <div class="card">
+    <div style="font-weight:700;margin-bottom:4px">😏 rahman tracker</div>
+    <p class="muted" style="font-size:.8rem;margin-bottom:12px">Tap every time she does the thing.</p>
+    ${HER_LOG.map((l,i)=>counterHTML("her",i,l,S.herLog[i]||0)).join("")}
+  </div>
+
+  <div class="spacer"></div>
+  <div class="card">
+    <div style="font-weight:700;margin-bottom:4px">💬 things she said</div>
+    <p class="muted" style="font-size:.8rem;margin-bottom:10px">Log the gems for the quote wall.</p>
+    <input class="txt" id="herSaid" placeholder="what she said..." style="margin-bottom:8px"/>
+    <button class="btn ghost" onclick="addHerQuote()">add to wall</button>
+  </div>
+
+  <div class="spacer"></div>
+  <div class="card" style="border-color:var(--blue2)">
+    <div style="font-weight:700;margin-bottom:4px">🔒 your secret wager</div>
+    <p class="muted" style="font-size:.8rem;margin-bottom:10px">Only you can see this until the recap reveal. A dare, a favor, a dinner — whatever you want to put up. Locked until the final whistle.</p>
+    ${S.wagerRevealed
+      ? `<div class="logline">${esc(S.wagerHim||"(nothing wagered)")}</div>`
+      : `<textarea class="note" id="wagerHimIn" placeholder="e.g. 'if i win, you have to watch a full match with me every weekend'" style="min-height:80px">${esc(S.wagerHim||"")}</textarea>
+         <div class="spacer"></div>
+         <button class="btn ghost" onclick="saveWager('him')">seal my wager 🔒</button>
+         ${S.wagerHim ? `<p class="muted" style="font-size:.76rem;margin-top:6px">✅ sealed — editable until the recap</p>` : ""}`
+    }
+    ${S.wagerHer && !S.wagerRevealed ? `<div class="divider"></div><p class="muted" style="font-size:.8rem">Rahman's wager: <b>🔒 sealed</b> — revealed at the end</p>` : ""}
+  </div>
+</section>`;}
+
+function renderComm(){
+  return (S.commentary||[]).slice().reverse().map(c=>
+    `<div class="logline"><div class="meta">${esc(c.t)}</div>${esc(c.x)}</div>`).join("")
+    ||`<p class="muted" style="font-size:.85rem">No takes yet.</p>`;
+}
+function addComm(){
+  const v=document.getElementById("commIn")?.value.trim();if(!v)return;
+  S.commentary.push({x:v,t:nowClock()});
+  document.getElementById("commIn").value="";
+  document.getElementById("commList").innerHTML=renderComm();
+  syncSave();
+}
+function addHerQuote(){
+  const v=document.getElementById("herSaid")?.value.trim();if(!v)return;
+  S.quotes.push({who:"her",text:v,t:nowClock()});
+  document.getElementById("herSaid").value="";
+  const qw=document.getElementById("quoteWall");if(qw)qw.innerHTML=renderQuotes();
+  syncSave();flashMascot("Logged. 😂 That's going in the vault.");
+}
+
+/* ===================== HERS TAB ===================== */
+function tabHers(){return `<section id="tab-hers" class="tab pad">
+  <div class="sectitle"><span class="dot"></span><span class="eyebrow">the experience tracker</span></div>
+  <h2 class="h2">Rahman ✨</h2>
+  <p class="muted" style="font-size:.88rem;margin-bottom:16px">Your predictions, Pathak's reactions, and the gems he drops.</p>
+
+  <div class="card">
+    <div style="font-weight:700;margin-bottom:10px">🔮 will he, won't he</div>
+    ${HER_PRED.map((p,i)=>`<label style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);cursor:pointer">
+      <input type="checkbox" ${S.herPred[i]?'checked':''} onchange="S.herPred[${i}]=this.checked;syncSave()"
+        style="width:22px;height:22px;accent-color:var(--blue);flex-shrink:0"/>
+      <span style="font-weight:600;font-size:.9rem">${p}</span>
+    </label>`).join("")}
+  </div>
+
+  <div class="spacer"></div>
+  <div class="card">
+    <div style="font-weight:700;margin-bottom:4px">🥹 pathak tracker</div>
+    <p class="muted" style="font-size:.8rem;margin-bottom:12px">Tap every time he does it.</p>
+    ${HIS_LOG.map((l,i)=>counterHTML("his",i,l,S.hisLog[i]||0)).join("")}
+  </div>
+
+  <div class="spacer"></div>
+  <div class="card">
+    <div style="font-weight:700;margin-bottom:4px">💬 things he said</div>
+    <p class="muted" style="font-size:.8rem;margin-bottom:10px">Log the gems.</p>
+    <input class="txt" id="hisSaid" placeholder="what he said..." style="margin-bottom:8px"/>
+    <button class="btn ghost" onclick="addHisQuote()">add to wall</button>
+  </div>
+
+  <div class="spacer"></div>
+  <div class="card" style="border-color:var(--terra)">
+    <div style="font-weight:700;margin-bottom:4px">🔒 your secret wager</div>
+    <p class="muted" style="font-size:.8rem;margin-bottom:10px">Only you can see this until the recap reveal. A dare, a favor, a dinner — whatever you want to put up. Locked until the final whistle.</p>
+    ${S.wagerRevealed
+      ? `<div class="logline">${esc(S.wagerHer||"(nothing wagered)")}</div>`
+      : `<textarea class="note" id="wagerHerIn" placeholder="e.g. 'if i win, you have to learn the colombia chant'" style="min-height:80px">${esc(S.wagerHer||"")}</textarea>
+         <div class="spacer"></div>
+         <button class="btn ghost" onclick="saveWager('her')">seal my wager 🔒</button>
+         ${S.wagerHer ? `<p class="muted" style="font-size:.76rem;margin-top:6px">✅ sealed — editable until the recap</p>` : ""}`
+    }
+    ${S.wagerHim && !S.wagerRevealed ? `<div class="divider"></div><p class="muted" style="font-size:.8rem">Pathak's wager: <b>🔒 sealed</b> — revealed at the end</p>` : ""}
+  </div>
+
+  <div class="spacer"></div>
+  <button class="btn ghost" onclick="openQuiz()">⚽ who should we root for? (take the quiz)</button>
+</section>`;}
+
+function addHisQuote(){
+  const v=document.getElementById("hisSaid")?.value.trim();if(!v)return;
+  S.quotes.push({who:"him",text:v,t:nowClock()});
+  document.getElementById("hisSaid").value="";
+  const qw=document.getElementById("quoteWall");if(qw)qw.innerHTML=renderQuotes();
+  syncSave();flashMascot("That one's a keeper. 📜");
+}
+
+/* ===================== PLAY TAB ===================== */
+function tabPlay(){return `<section id="tab-play" class="tab pad">
+  <div class="sectitle"><span class="dot"></span><span class="eyebrow">the date games</span></div>
+
+  <h2 class="h2" style="margin-bottom:4px">🎲 prop bets</h2>
+  <p class="muted" style="font-size:.86rem;margin-bottom:12px">Lock in before kickoff. Loser buys post-game tacos. 🌮</p>
+  ${BETS.map((b,i)=>betCard(b,i)).join("")}
+  <div class="card center" style="background:#F3F7FD;margin-bottom:4px">
+    <div class="muted" style="font-size:.78rem;margin-bottom:4px">TACO SCORE</div>
+    <div style="font-family:'Fraunces',serif;font-size:1.4rem">Rahman <b id="scoreHer">0</b> · <b id="scoreHim">0</b> Pathak</div>
+    <p class="muted" style="font-size:.74rem;margin-top:4px">set the ✓ result as each one lands</p>
+  </div>
+
+  <div class="divider"></div>
+  <h2 class="h2" style="margin-bottom:4px">📸 photo missions</h2>
+  <p class="muted" style="font-size:.86rem;margin-bottom:4px"><span id="photoCount"></span> — tap to snap within the app.</p>
+  <p class="muted" style="font-size:.76rem;margin-bottom:12px">grainy is the vibe 🌾 · photos sync between phones when the payload is small enough · always on your device regardless</p>
+  ${PHOTOS.map(p=>photoCell(p)).join("")}
+
+  <div class="divider"></div>
+  <h2 class="h2" style="margin-bottom:4px">💬 the quote wall</h2>
+  <p class="muted" style="font-size:.86rem;margin-bottom:12px">Everything worth remembering from today.</p>
+  <div class="card">
+    <input class="txt" id="qWho" placeholder="who said it?" style="margin-bottom:8px"/>
+    <textarea class="note" id="qText" placeholder="the quote..."></textarea>
+    <div class="spacer"></div>
+    <button class="btn" onclick="addQuote()">add to wall</button>
+  </div>
+  <div id="quoteWall" style="margin-top:14px">${renderQuotes()}</div>
+
+  <div class="divider"></div>
+  <button class="btn alt" onclick="openRecap()">🏆 game day recap + report cards</button>
+  <div style="height:8px"></div>
+</section>`;}
+
+function betCard(b,i){return `<div class="bet">
+  <div class="q">${i+1}. ${b.q}</div>
+  <div class="pickrow"><span class="who">HER</span>
+    ${b.opts.map(o=>`<button class="${S.betHer[i]===o?'sel-her':''}" onclick="setBet('her',${i},'${o}')">${o}</button>`).join("")}</div>
+  <div class="pickrow"><span class="who">HIM</span>
+    ${b.opts.map(o=>`<button class="${S.betHim[i]===o?'sel-him':''}" onclick="setBet('him',${i},'${o}')">${o}</button>`).join("")}</div>
+  <div class="pickrow"><span class="who" style="color:var(--terra)">✓</span>
+    ${b.opts.map(o=>`<button class="${S.betResult[i]===o?'sel-res':''}" onclick="setBet('res',${i},'${o}')">${o}</button>`).join("")}</div>
+</div>`;}
+
+function setBet(who,i,o){
+  if(who==="her")S.betHer[i]=o; else if(who==="him")S.betHim[i]=o; else S.betResult[i]=o;
+  syncSave();tallyBets();
+  // re-render the bet card in place
+  const old=document.querySelectorAll(".bet")[i];
+  if(old){old.outerHTML=betCard(BETS[i],i);}
+  tallyBets();
+}
+function tallyBets(){
+  let h=0,m=0;
+  BETS.forEach((b,i)=>{
+    if(S.betResult[i]){if(S.betHer[i]===S.betResult[i])h++;if(S.betHim[i]===S.betResult[i])m++;}
+  });
+  const eh=document.getElementById("scoreHer"),em=document.getElementById("scoreHim");
+  if(eh)eh.textContent=h;if(em)em.textContent=m;
+}
+
+function photoCell(p){
+  const img=S.photos[p.id];
+  return `<div class="photo-cell ${img?'done':''}" onclick="document.getElementById('ph-${p.id}').click()">
+    <div class="cap">${img?'✅ ':'📷 '}${p.cap}</div>
+    <div class="hint">${p.hint}</div>
+    ${img?`<img src="${img}" loading="lazy"/>`:''}
+    <input type="file" id="ph-${p.id}" accept="image/*" capture="environment" style="display:none"
+      onchange="snap('${p.id}',this)"/>
+  </div>`;}
+
+function updatePhotoCount(){
+  const done=PHOTOS.filter(p=>S.photos[p.id]).length;
+  const el=document.getElementById("photoCount");
+  if(el)el.textContent=`${done}/${PHOTOS.length} captured`;
+}
+
+function renderQuotes(){
+  return (S.quotes||[]).slice().reverse().map(q=>
+    `<div class="logline"><div class="meta">${esc(q.who||'?')} · ${esc(q.t)}</div>"${esc(q.text)}"</div>`).join("")
+    ||`<p class="muted" style="font-size:.85rem">Wall's empty. Fill it up today. 😄</p>`;
+}
+function addQuote(){
+  const who=document.getElementById("qWho")?.value.trim();
+  const text=document.getElementById("qText")?.value.trim();
+  if(!text)return;
+  S.quotes.push({who:who||"?",text,t:nowClock()});
+  document.getElementById("qWho").value="";document.getElementById("qText").value="";
+  document.getElementById("quoteWall").innerHTML=renderQuotes();
+  syncSave();
+}
+
+/* ===================== WAGER ===================== */
+function saveWager(who){
+  const el=document.getElementById("wager"+who.charAt(0).toUpperCase()+who.slice(1)+"In");
+  if(!el)return;
+  const v=el.value.trim();
+  if(who==="her")S.wagerHer=v; else S.wagerHim=v;
+  syncSave();
+  flashMascot("Sealed. Cannot wait to see how this plays out. 🔒");
+  render();go(who==="her"?"hers":"his");
+}
+
+/* ===================== RECAP + REPORT CARDS ===================== */
+function openRecap(){
+  let herBets=0,himBets=0;
+  BETS.forEach((b,i)=>{
+    if(S.betResult[i]){
+      if(S.betHer[i]===S.betResult[i])herBets++;
+      if(S.betHim[i]===S.betResult[i])himBets++;
+    }
+  });
+  const herChaos=Object.values(S.herLog||{}).reduce((a,b)=>a+b,0);
+  const hisChaos=Object.values(S.hisLog||{}).reduce((a,b)=>a+b,0);
+  const wrongCheers=S.herLog[0]||0;
+  const fakeExpert=S.herLog[2]||0;
+  const foodTheft=S.herLog[4]||0;
+  const crowdFollow=S.herLog[6]||0;
+  const refYells=S.hisLog[1]||0;
+  const lectures=S.hisLog[3]||0;
+  const academyMentions=S.hisLog[5]||0;
+  const commCount=(S.commentary||[]).length;
+  const photosDone=PHOTOS.filter(p=>S.photos[p.id]).length;
+  const herQuotes=(S.quotes||[]).filter(q=>q.who==="her").length;
+  const himQuotes=(S.quotes||[]).filter(q=>q.who==="him").length;
+
+  // her title
+  const herTitle=herChaos<=2?"Composed MVP":herChaos<=5?"Controlled Chaos":herChaos<=9?"Professional Heckler":"Agent of Beautiful Chaos";
+  // him title
+  const himTitle=commCount===0&&hisChaos<=2?"Surprisingly Zen":hisChaos<=5?"Tactical Observer":hisChaos<=10?"Sideline Manager":"Full Pep Mode";
+
+  const betWinner=herBets>himBets?"Her":himBets>herBets?"Him":"Neither of you (it's a draw, split the tacos 😂)";
+
+  const herGrades=[
+    {k:"Soccer IQ",v:wrongCheers+fakeExpert===0?"B- (suspicious accuracy)":wrongCheers+fakeExpert<=2?"C+ (effort shown)":"D (iconic, honestly)"},
+    {k:"Snack Game",v:foodTheft===0?"C- (missed opportunity)":foodTheft===1?"A- (clean execution)":"S-tier (ruthless)"},
+    {k:"Crowd Assimilation",v:crowdFollow<=1?"B (selective)":crowdFollow<=3?"A- (goes with the flow)":"A+ (one with the stadium)"},
+    {k:"Photo Mission",v:`${photosDone}/${PHOTOS.length} · ${photosDone>=9?"A+":photosDone>=6?"B":photosDone>=3?"C":"D (she was distracted)"}`},
+    {k:"Prop Bet IQ",v:`${herBets}/${BETS.length} correct · ${herBets>=6?"genius":herBets>=4?"solid":herBets>=2?"lucky":"yikes"}`}
+  ];
+
+  const himGrades=[
+    {k:"Emotional Regulation",v:refYells===0?"A (who IS this person)":refYells<=2?"B- (barely held it)":refYells<=4?"C (he tried)":"F (beautiful chaos energy)"},
+    {k:"Tactical Analysis",v:commCount===0?"0 takes — retirement watch":commCount<=3?`${commCount} logged · solid`:commCount<=7?`${commCount} logged · he was in it`:`${commCount} logged · documentary incoming`},
+    {k:"Teaching Moments",v:lectures===0?"0 lectures — oddly chill":`${lectures} unprompted lecture${lectures>1?"s":""} delivered · educator of the year`},
+    {k:"Academy Energy",v:academyMentions===0?"kept it to himself · B+":academyMentions===1?"mentioned once · on brand":`${academyMentions}x today · we get it, you were good`},
+    {k:"Prop Bet IQ",v:`${himBets}/${BETS.length} correct · ${himBets>=6?"genius":himBets>=4?"solid":himBets>=2?"lucky":"needs coaching"}`}
+  ];
+
+  const herVerdict=herChaos>=8?"Be curious, not judgmental. (About soccer. She's trying.)":foodTheft>0?"There's two things I never like to lose — a match and a fry. She got one of them.":"Don't you dare settle for fine. She didn't. Not once today.";
+  const himVerdict=refYells>=4?"Taking on a challenge is a lot like riding a horse. He was bucked off by the ref today.":commCount>=5?"Football is life. This man's whole life.":"If you care about someone and you got a little love in your heart — that's what today was.";
+
+  function cardSMSText(name,title,grades,verdict){
+    return `${name.toUpperCase()}'S FOULPLAY REPORT CARD\n${title}\n\n`+grades.map(g=>`${g.k}: ${g.v}`).join('\n')+`\n\n"${verdict}" — Coach Ball ⚽`;
+  }
+  function gradeCard(name,title,grades,verdict,color){
+    const sms=`sms:9166777839;body=${encodeURIComponent(cardSMSText(name,title,grades,verdict))}`;
+    return `<div class="card" style="margin-bottom:14px;border-color:${color}">
+      <div class="eyebrow" style="color:${color}">${name}'s report card</div>
+      <div class="h2" style="margin:4px 0 12px">${title}</div>
+      ${grades.map(g=>`<div class="stat-row"><span class="muted" style="font-size:.85rem">${g.k}</span><b style="font-size:.88rem;text-align:right;max-width:55%">${g.v}</b></div>`).join("")}
+      <div class="divider"></div>
+      <div style="font-family:'Fraunces',serif;font-style:italic;font-size:.95rem;color:var(--ink)">
+        "Coach Ball says: ${verdict}"
+      </div>
+      <div class="divider"></div>
+      <a href="${sms}" style="display:block;text-align:center;font-size:.82rem;font-weight:700;color:var(--blue);text-decoration:none">📲 text this card to the other phone →</a>
+    </div>`;
+  }
+
+  hideNav();
+  $app().innerHTML=`<div class="pad" style="padding-top:40px">
+    <div class="eyebrow center">final whistle</div>
+    <h1 class="h1 center" style="margin:8px 0 4px">game day recap 🏆</h1>
+    <p class="muted center" style="margin-bottom:20px;font-size:.88rem">Colombia ${S.score.h} – ${S.score.a} Jordan</p>
+
+    <div class="card center" style="margin-bottom:14px;background:linear-gradient(135deg,#163C6E,#0E2746);color:#fff">
+      <div style="font-size:.72rem;letter-spacing:2px;text-transform:uppercase;opacity:.8">prop bet winner</div>
+      <div style="font-family:'Fraunces',serif;font-size:1.5rem;margin-top:6px">${betWinner}</div>
+      ${betWinner.includes("draw")?"":"<div style='font-size:.85rem;opacity:.85;margin-top:4px'>buys the tacos 🌮</div>"}
+    </div>
+
+    ${!S.wagerRevealed&&(S.wagerHer||S.wagerHim)?`<button class="btn alt" style="margin-bottom:14px" onclick="revealWagers()">🔓 reveal the secret wagers</button>`:
+      S.wagerRevealed?`<div class="card" style="margin-bottom:14px;background:#FFF3CC">
+        <div style="font-weight:700;margin-bottom:10px">🔓 the wagers, revealed</div>
+        <p class="muted" style="font-size:.8rem;margin-bottom:4px">Rahman's wager:</p>
+        <div class="logline">${esc(S.wagerHer||"(nothing wagered)")}</div>
+        <p class="muted" style="font-size:.8rem;margin:8px 0 4px">Pathak's wager:</p>
+        <div class="logline">${esc(S.wagerHim||"(nothing wagered)")}</div>
+      </div>`:""}
+
+    ${gradeCard("Rahman",herTitle,herGrades,herVerdict,"#E07A5F")}
+    ${gradeCard("Pathak",himTitle,himGrades,himVerdict,"#163C6E")}
+
+    ${photosDone>0?`<div class="card" style="margin-bottom:14px">
+      <div style="font-weight:700;margin-bottom:10px">📸 ${photosDone} photo${photosDone>1?"s":""} from today</div>
+      <div class="recap-grid">${PHOTOS.filter(p=>S.photos[p.id]).map(p=>`<div><img src="${S.photos[p.id]}" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px"/><div style="font-size:.7rem;color:var(--soft);margin-top:3px;text-align:center">${p.cap}</div></div>`).join("")}</div>
+    </div>`:""}
+
+    ${S.quotes.length>0?`<div class="card" style="margin-bottom:14px">
+      <div style="font-weight:700;margin-bottom:10px">💬 the quote wall</div>
+      ${S.quotes.map(q=>`<div class="logline"><div class="meta">${esc(q.who)} · ${esc(q.t)}</div>"${esc(q.text)}"</div>`).join("")}
+    </div>`:""}
+
+    <div class="card center" style="margin-bottom:14px;background:#FFF3CC">
+      <div style="font-size:1.8rem">⚽</div>
+      <p style="font-family:'Fraunces',serif;font-style:italic;margin-top:8px;font-size:1rem">
+        "${rand(REACT.full)}"
+      </p>
+      <p class="muted" style="font-size:.72rem;margin-top:8px">— Coach Ball</p>
+    </div>
+
+    <button class="btn ghost" onclick="showNav();render();go('play')">← back to the game</button>
+    <div style="height:40px"></div>
+  </div>`;
+}
+
+function revealWagers(){
+  S.wagerRevealed=true;
+  syncSave();
+  confetti();
+  openRecap();
+}
+
+/* ===================== PLAN TAB ===================== */
+function tabPlan(){return `<section id="tab-plan" class="tab pad">
+  <div class="sectitle"><span class="dot"></span><span class="eyebrow">the game plan</span></div>
+
+  <h2 class="h2" style="margin-bottom:10px">🗺️ the afternoon</h2>
+  <div class="card"><div class="tl">
+    ${ITINERARY.map(s=>`<div class="ev"><div class="t">${s.t}</div><div style="font-size:.88rem">${s.x}</div></div>`).join("")}
+  </div></div>
+
+  <div class="spacer"></div>
+  <div class="row">
+    <a class="chip" href="https://maps.apple.com/?daddr=Snapdragon+Stadium,San+Diego" style="flex:1;justify-content:center;text-decoration:none" target="_blank">🗺️ Directions</a>
+    <a class="chip" href="https://maps.apple.com/?q=Old+Town+Transit+Center,San+Diego" style="flex:1;justify-content:center;text-decoration:none" target="_blank">🚆 Old Town Parking</a>
+  </div>
+
+  <div class="divider"></div>
+  <h2 class="h2" style="margin-bottom:10px">⚽ know the teams</h2>
+  ${Object.entries(TEAMS).map(([k,t])=>`<div class="card" style="margin-bottom:12px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+      <span style="font-size:1.8rem">${t.flag}</span>
+      <div><b>${t.name}</b><div class="muted" style="font-size:.8rem">${t.nick}</div></div>
+    </div>
+    <div class="flagband">${t.colors.map(c=>`<i style="background:${c}"></i>`).join("")}</div>
+    <p style="font-size:.86rem">${t.desc}</p>
+  </div>`).join("")}
+
+  <div class="card" style="margin-bottom:12px">
+    <div style="font-weight:700;margin-bottom:8px">🌟 players to watch</div>
+    ${PLAYERS.map(p=>`<div style="padding:9px 0;border-bottom:1px solid var(--line)">
+      <div><span class="tag">${TEAMS[p.t].flag} #${p.no}</span> <b>${p.name}</b></div>
+      <div class="muted" style="font-size:.84rem;margin:3px 0">${p.blurb}</div>
+      <div style="font-size:.82rem;color:var(--blue2)">💬 "${p.say}"</div>
+    </div>`).join("")}
+  </div>
+
+  <div class="card" style="margin-bottom:12px">
+    <div style="font-weight:700;margin-bottom:8px">🧠 things to casually drop</div>
+    ${SAYINGS.map(s=>`<p style="font-size:.85rem;padding:7px 0;border-bottom:1px solid var(--line)">"${s}"</p>`).join("")}
+  </div>
+
+  <div class="card" style="margin-bottom:12px">
+    <div style="font-weight:700;margin-bottom:8px">✅ before you leave</div>
+    <p style="font-size:.88rem;line-height:1.8">
+      • Clear bag only — no backpacks, no laptops past security<br/>
+      • 100% cashless — card or Apple Pay only<br/>
+      • Box office opens 2:00 PM · gates open 2:30 PM<br/>
+      • PRONTO app for trolley: ~$2.50 each way<br/>
+      • Park free: Old Town Transit Center, Taylor St side
+    </p>
+  </div>
+
+  <div class="card">
+    <div style="font-weight:700;margin-bottom:6px">🔗 session</div>
+    <p class="muted" style="font-size:.82rem;margin-bottom:8px">Your session code — share with the other phone:</p>
+    <div class="code-box" style="font-size:1rem;letter-spacing:.08em;word-break:break-all" onclick="copyCode()">${S.binId||"—"}</div>
+    <p class="muted" style="font-size:.76rem">tap to copy</p>
+    <div class="spacer"></div>
+    <button class="btn red" onclick="resetSession()">reset session (start over)</button>
+  </div>
+  <div style="height:30px"></div>
+  <p class="center muted" style="font-size:.76rem">made for one very good soccer afternoon ⚽</p>
+</section>`;}
+
+/* ===================== QUIZ ===================== */
+let quizStep=0,quizScore={col:0,jor:0};
+function openQuiz(){quizStep=0;quizScore={col:0,jor:0};renderQuiz();}
+function renderQuiz(){
+  document.getElementById("nav").style.display="none";
+  if(quizStep<QUIZ_Q.length){
+    const c=QUIZ_Q[quizStep];
+    $app().innerHTML=`<div class="screen">
+      <div class="progress">${QUIZ_Q.map((_,i)=>`<i class="${i<quizStep?'fill':''}"></i>`).join("")}</div>
+      <div class="eyebrow">who do we root for · ${quizStep+1}/${QUIZ_Q.length}</div>
+      <h1 class="h1" style="margin:8px 0 18px">${c.q}</h1>
+      ${c.a.map(o=>`<button class="opt" onclick="quizPick('${o[1]}')">${o[0]}</button>`).join("")}
+      <button class="btn ghost" style="margin-top:14px" onclick="document.getElementById('nav').style.display='flex';render();go('hers')">← back</button>
+    </div>`;
+  }else{
+    const w=quizScore.col>=quizScore.jor?"col":"jor";const t=TEAMS[w];
+    document.getElementById("nav").style.display="flex";
+    $app().innerHTML=`<div class="screen center">
+      <div style="font-size:3.6rem">${t.flag}</div>
+      <div class="eyebrow" style="margin-top:10px">today, you ride with</div>
+      <h1 class="h1" style="margin:6px 0">${t.name}</h1>
+      <p class="muted" style="max-width:280px;margin:0 auto">${w==='col'?'Flair, drums, and a sea of yellow. Go loud.':'The brave underdogs. Grit over glamour.'}</p>
+      <div class="flagband" style="max-width:180px;margin:16px auto">${t.colors.map(c=>`<i style="background:${c}"></i>`).join("")}</div>
+      <div class="spacer"></div>
+      <button class="btn alt" onclick="render();go('hers')">I can work with that →</button>
+    </div>`;
+    flashMascot("Now you got a side. Football is LIFE! 🎉");
+  }
+}
+function quizPick(team){quizScore[team]++;quizStep++;renderQuiz();}
+
+/* ===================== MASCOT ===================== */
+let bubbleTimer=null;
+function tapMascot(){setMood("happy");flashMascot(rand(QUOTES));}
+function setMood(mood){
+  const mouth=document.getElementById("mmouth");
+  const bl=document.getElementById("browL"),br=document.getElementById("browR");
+  if(!mouth)return;
+  mouth.className="mmouth";
+  if(bl)bl.style.transform=""; if(br)br.style.transform="";
+  if(mood==="goal"){
+    mouth.classList.add("shocked");
+    if(bl)bl.style.transform="rotate(-20deg) translateY(-2px)";
+    if(br)br.style.transform="rotate(20deg) translateY(-2px)";
+    document.getElementById("mascot").classList.add("hype");
+    setTimeout(()=>document.getElementById("mascot")?.classList.remove("hype"),600);
+  } else if(mood==="sad"){
+    mouth.classList.add("sad");
+    if(bl)bl.style.transform="rotate(15deg)";
+    if(br)br.style.transform="rotate(-15deg)";
+  } else if(mood==="happy"){
+    if(bl)bl.style.transform="rotate(-10deg) translateY(-1px)";
+    if(br)br.style.transform="rotate(10deg) translateY(-1px)";
+  }
+}
+function flashMascot(text,mood){
+  const b=document.getElementById("bubble"),t=document.getElementById("bubbleText");
+  if(!b||!t)return;
+  if(mood)setMood(mood); else setMood("happy");
+  t.textContent=text;b.classList.add("show");
+  clearTimeout(bubbleTimer);
+  bubbleTimer=setTimeout(()=>{b.classList.remove("show");setMood("normal");},5500);
+}
+
+/* ===================== CONFETTI ===================== */
+function confetti(){
+  const c=document.getElementById("confetti");c.innerHTML="";c.classList.add("go");
+  const cols=["#FFD100","#003893","#CE1126","#fff","#E07A5F","#9DC8A0"];
+  for(let i=0;i<75;i++){
+    const d=document.createElement("div");d.className="cf";
+    d.style.left=Math.random()*100+"%";
+    d.style.background=cols[i%cols.length];
+    d.style.animationDuration=(1.5+Math.random()*1.8)+"s";
+    d.style.animationDelay=(Math.random()*.5)+"s";
+    c.appendChild(d);
+  }
+  setTimeout(()=>c.classList.remove("go"),3500);
+}
+
+/* ===================== LIVE FEED (API-Football) ===================== */
+function manualScore(){
+  const h=prompt("Colombia goals:",S.score?.h||0);
+  const a=prompt("Jordan goals:",S.score?.a||0);
+  if(h===null)return;
+  S.score={h:parseInt(h)||0,a:parseInt(a)||0};syncSave();paintScoreboard();
+}
+function demoGoal(){
+  S.score=S.score||{h:0,a:0};S.score.h++;
+  S.events=S.events||[];
+  S.events.push({min:S.events.length*8+11,icon:"⚽",title:"GOAL — Colombia",detail:"Demo: Luis Díaz rifles it into the top corner"});
+  syncSave();paintScoreboard();confetti();flashMascot(rand(REACT.colGoal));
+}
+async function findFixture(){
+  try{
+    const r=await fetch("https://v3.football.api-sports.io/fixtures?date=2026-06-07&timezone=America/Los_Angeles",
+      {headers:{"x-apisports-key":FOOTBALL_KEY}});
+    const j=await r.json();
+    const m=(j.response||[]).find(f=>{
+      const h=(f.teams.home.name||"").toLowerCase(),a=(f.teams.away.name||"").toLowerCase();
+      return (h.includes("colombia")||a.includes("colombia"))&&(h.includes("jordan")||a.includes("jordan"));
+    });
+    if(m){S.fixtureId=m.fixture.id;S.homeIsCol=(m.teams.home.name||"").toLowerCase().includes("colombia");saveLocal();}
+  }catch(e){console.warn(e);}
+}
+async function pollNow(){
+  if(!S.fixtureId){paintScoreboard();return;}
+  try{
+    const r=await fetch("https://v3.football.api-sports.io/fixtures?id="+S.fixtureId,
+      {headers:{"x-apisports-key":FOOTBALL_KEY}});
+    const j=await r.json();const f=(j.response||[])[0];if(!f)return;
+    const colHome=S.homeIsCol!==false;
+    const gh=f.goals.home||0,ga=f.goals.away||0;
+    S.score={h:colHome?gh:ga,a:colHome?ga:gh};
+    const st=f.fixture.status.short;
+    S.statusText=statusLabel(st,f.fixture.status.elapsed);
+    if(st!==S.lastStatus){
+      if(st==="1H"&&S.lastStatus==="NS")flashMascot(rand(REACT.kickoff));
+      if(st==="HT")flashMascot(rand(REACT.half));
+      if(st==="FT"||st==="AET"||st==="PEN")flashMascot(rand(REACT.full));
+      S.lastStatus=st;
+    }
+    const evs=f.events||[];
+    S.events=evs.map(e=>({
+      min:e.time.elapsed+(e.time.extra?"+"+e.time.extra:""),
+      icon:e.type==="Goal"?"⚽":(e.type==="Card"?(e.detail&&e.detail.includes("Red")?"🟥":"🟨"):(e.type==="subst"?"🔁":"•")),
+      title:(e.type==="Goal"?"GOAL — ":"")+(e.team?.name||"")+(e.type==="Card"?" "+(e.detail||""):"")+(e.type==="subst"?" sub":""),
+      detail:e.player?.name||(e.assist?.name?`assist: ${e.assist.name}`:""),
+      key:`${e.time.elapsed}-${e.player?.id}-${e.type}`
+    }));
+    S.events.forEach(e=>{
+      if(!S.seenEvents.includes(e.key)){
+        S.seenEvents.push(e.key);
+        if(e.icon==="⚽"){const col=e.title.toLowerCase().includes("colombia");confetti();flashMascot(rand(col?REACT.colGoal:REACT.jorGoal),"goal");}
+        else if(e.icon==="🟨"||e.icon==="🟥")flashMascot(rand(REACT.card));
+      }
+    });
+    syncSave();paintScoreboard();
+  }catch(e){console.warn("poll failed",e);}
+}
+function statusLabel(st,el){
+  return {NS:"Kickoff 4:00 PM PDT",HT:"Halftime — 15 min break",FT:"Full Time",PST:"Postponed",
+    "1H":"1st Half "+(el||"")+"'","2H":"2nd Half "+(el||"")+"'",ET:"Extra Time",PEN:"Penalties",AET:"After Extra Time"}[st]||st;
+}
+setInterval(()=>{if(document.visibilityState==="visible")pollNow();},90000);
+
+/* ===================== PHOTOS ===================== */
+function snap(id,input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=new Image();
+    img.onload=()=>{
+      const max=160,scale=Math.min(1,max/Math.max(img.width,img.height));
+      const c=document.createElement("canvas");
+      c.width=img.width*scale;c.height=img.height*scale;
+      c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+      try{
+        S.photos[id]=c.toDataURL("image/jpeg",.14);saveLocal();
+        render();go("play");
+        flashMascot("Now THAT is a keeper shot. 📸");
+        updatePhotoCount();
+      }catch(er){alert("Storage full — try deleting a photo first.");}
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ===================== UTILS ===================== */
+function counterHTML(group,i,label,val){
+  return `<div class="counter"><span class="lbl">${label}</span>
+    <div class="ct">
+      <button class="minus" onclick="bump('${group}',${i},-1)">−</button>
+      <span class="num" id="${group}-${i}">${val}</span>
+      <button class="plus" onclick="bump('${group}',${i},1)">+</button>
+    </div></div>`;
+}
+function bump(group,i,d){
+  const map=group==="her"?S.herLog:S.hisLog;
+  map[i]=Math.max(0,(map[i]||0)+d);
+  syncSave();
+  const el=document.getElementById(group+"-"+i);if(el)el.textContent=map[i];
+  if(d>0&&Math.random()<.35)flashMascot(rand(QUOTES));
+}
+function syncSave(){saveLocal();pushSync();}
+function rand(a){return a[Math.floor(Math.random()*a.length)];}
+function esc(s){return(s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+function nowClock(){const d=new Date();let h=d.getHours(),m=d.getMinutes();const ap=h>=12?"PM":"AM";h=h%12||12;return h+":"+(m<10?"0":"")+m+" "+ap;}
+function hideNav(){document.getElementById("nav").style.display="none";}
+function showNav(){document.getElementById("nav").style.display="flex";}
+
+/* ===================== QUICK QUOTE ===================== */
+function openQuickQuote(){document.getElementById("quickModal").classList.add("show");setTimeout(()=>document.getElementById("qqText")?.focus(),100);}
+function closeQuickQuote(){document.getElementById("quickModal").classList.remove("show");}
+function submitQuickQuote(){
+  const who=document.getElementById("qqWho")?.value.trim();
+  const text=document.getElementById("qqText")?.value.trim();
+  if(!text)return;
+  S.quotes.push({who:who||"?",text,t:nowClock()});
+  document.getElementById("qqWho").value="";document.getElementById("qqText").value="";
+  closeQuickQuote();
+  const qw=document.getElementById("quoteWall");if(qw)qw.innerHTML=renderQuotes();
+  syncSave();flashMascot("That one's a keeper. 📜");
+}
+
+/* ===================== KISS CAM ===================== */
+let kissCamArmed=false;
+function triggerKissCam(){
+  if(kissCamArmed)return;
+  kissCamArmed=true;
+  document.getElementById("kissCam").classList.add("show");
+  flashMascot("KISS CAM! You've been selected. No backing out. 💋");
+}
+function closeKissCam(){document.getElementById("kissCam").classList.remove("show");}
+function snapKissCam(input){
+  if(!input){document.getElementById("kissCamInput").click();return;}
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=new Image();
+    img.onload=()=>{
+      const max=200,scale=Math.min(1,max/Math.max(img.width,img.height));
+      const c=document.createElement("canvas");c.width=img.width*scale;c.height=img.height*scale;
+      c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+      S.photos["kisscam"]=c.toDataURL("image/jpeg",.18);saveLocal();
+      closeKissCam();flashMascot("LEGENDARY. That one's going on the wall. 💋📸");
+      syncSave();
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+// random kiss cam during game — fires once between 30-75 min mark if both in stadium
+setInterval(()=>{
+  if(!kissCamArmed&&S.milestones.in&&S.lastStatus&&["1H","2H"].includes(S.lastStatus)){
+    if(Math.random()<0.003)triggerKissCam(); // ~1 check per 90s, very low probability
+  }
+},90000);
+function resetSession(){
+  if(!confirm("This clears everything — all bets, notes, and logs. Are you sure?"))return;
+  localStorage.clear();location.reload();
+}
+
+/* ===================== BOOT ===================== */
+loadLocal();
+render();
+if(S.onboarded){
+  go(S.tab||"match");
+  setTimeout(tallyBets,100);
+  findFixture().then(()=>pollNow());
+  if(S.binId)startPolling();
+}
+</script>
+</body>
+</html>
