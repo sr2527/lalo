@@ -113,29 +113,29 @@ input,textarea{font-family:inherit;font-size:1rem}
 .m-shin{width:7px;height:16px;background:#fff;border:2px solid #111;border-radius:4px}
 .m-shoe{width:14px;height:7px;background:#CE1126;border:2px solid #111;border-radius:0 6px 6px 0;margin-top:-1px}
 .m-shoe-l{border-radius:6px 0 0 6px}
-#mascot{width:86px;height:86px;border-radius:50%;cursor:pointer;pointer-events:auto;
+#mascot{width:90px;height:90px;border-radius:50%;cursor:pointer;pointer-events:auto;
   display:flex;align-items:center;justify-content:center;position:relative;
   background:
-    radial-gradient(ellipse 11px 9px at 32% 18%,#111 0%,#111 100%),
-    radial-gradient(ellipse 9px 8px at 70% 14%,#111 0%,#111 100%),
-    radial-gradient(ellipse 8px 8px at 8% 62%,#111 0%,#111 100%),
-    radial-gradient(ellipse 9px 8px at 83% 67%,#111 0%,#111 100%),
-    radial-gradient(ellipse 10px 9px at 50% 85%,#111 0%,#111 100%),
-    white;
-  border:3px solid #111;box-shadow:0 6px 22px rgba(0,0,0,.3)}
+    radial-gradient(circle 9px at 19% 13%,#111 98%,transparent 100%),
+    radial-gradient(circle 9px at 81% 13%,#111 98%,transparent 100%),
+    radial-gradient(circle 8px at 4%  54%,#111 98%,transparent 100%),
+    radial-gradient(circle 8px at 96% 54%,#111 98%,transparent 100%),
+    radial-gradient(circle 9px at 50% 93%,#111 98%,transparent 100%),
+    #fff;
+  border:3px solid #111;box-shadow:0 8px 24px rgba(0,0,0,.28)}
 #mascot:active{transform:scale(.9)}
 #mascot.hype{animation:spin .5s ease-in-out}
 @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
-#mface{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;pointer-events:none}
-.meyes{display:flex;gap:11px;position:relative;z-index:2}
-.meye{width:6px;height:7px;border-radius:50%;background:#23201B;animation:blink 4s ease-in-out infinite}
+#mface{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;pointer-events:none}
+.mbrows{display:flex;gap:14px;margin-bottom:-1px}
+.mbrow{width:13px;height:3px;background:#111;border-radius:3px;transition:transform .25s}
+.meyes{display:flex;gap:12px;position:relative;z-index:2}
+.meye{width:14px;height:14px;border-radius:50%;background:#111;position:relative;animation:blink 4s ease-in-out infinite}
+.meye::after{content:'';position:absolute;width:4px;height:4px;background:#fff;border-radius:50%;top:2px;right:2px}
 @keyframes blink{0%,90%,100%{transform:scaleY(1)}95%{transform:scaleY(0.05)}}
-.mbrows{display:flex;gap:8px;margin-bottom:-2px}
-.mbrow{width:8px;height:2px;background:#23201B;border-radius:2px;transition:transform .25s}
-.mmouth{width:14px;height:7px;border-bottom:2.5px solid #23201B;border-radius:0 0 10px 10px;transition:all .25s}
-.mmouth.sad{border-bottom:none;border-top:2.5px solid #23201B;border-radius:10px 10px 0 0;margin-top:4px}
-.mmouth.shocked{width:10px;height:10px;border:2.5px solid #23201B;border-radius:50%;border-bottom-width:2.5px}
-@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.mmouth{width:26px;height:13px;border:3px solid #111;border-top:none;border-radius:0 0 26px 26px;transition:all .25s}
+.mmouth.sad{border-top:3px solid #111;border-bottom:none;border-radius:26px 26px 0 0;margin-top:5px}
+.mmouth.shocked{width:14px;height:14px;border:3px solid #111;border-radius:50%}
 #bubble{position:fixed;right:24px;bottom:194px;z-index:61;max-width:260px;background:#fff;
   border:2px solid var(--blue);border-radius:18px 18px 4px 18px;padding:14px 16px;
   box-shadow:var(--shadow);display:none}
@@ -269,8 +269,8 @@ input.txt:focus{border-color:var(--blue);outline:none}
     <div class="m-arm m-arm-l"></div>
     <div id="mascot" onclick="tapMascot()">
       <div id="mface">
-        <div class="meyes"><div class="meye" id="eyeL"></div><div class="meye" id="eyeR"></div></div>
         <div class="mbrows"><div class="mbrow" id="browL"></div><div class="mbrow" id="browR"></div></div>
+        <div class="meyes"><div class="meye" id="eyeL"></div><div class="meye" id="eyeR"></div></div>
         <div class="mmouth" id="mmouth"></div>
       </div>
     </div>
