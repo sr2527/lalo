@@ -508,7 +508,7 @@ function render(){
     if(!S.pathakQsDone){renderPathakOnboard();hide();return;}
     if(!S.sheSaidYes){renderSurpriseReveal();hide();return;}
     if(!S.binId){renderHostSession();hide();return;}
-    if(!S.onboarded){renderOnboard(0);hide();return;}
+    if(!S.onboarded){S.onboarded=true;saveLocal();}  // he planned the day — skip re-asking
   }
   // step 3: rahman flow
   if(S.jerseyRole==="rahman"){
@@ -557,11 +557,11 @@ function renderJerseyPicker(){
     <p class="muted" style="font-size:.88rem;margin-bottom:8px">tap your jersey to get started</p>
     <div class="jersey-stage">
       <button class="jersey-btn" onclick="pickJersey('pathak')">
-        ${jerseyHTML("#FCD116","#003087","#1a2e6b","PATHAK","10")}
+        ${jerseyHTML("#FCD116","#003087","#1a2e6b","PATHAK","27")}
         <div class="jersey-tag" style="color:#003087;margin-top:6px">Pathak</div>
       </button>
       <button class="jersey-btn" onclick="pickJersey('rahman')">
-        ${jerseyHTML("#c9522a","#8b3518","#fff","RAHMAN","7")}
+        ${jerseyHTML("#c9522a","#8b3518","#fff","RAHMAN","6")}
         <div class="jersey-tag" style="color:#c9522a;margin-top:6px">Rahman</div>
       </button>
     </div>
@@ -624,25 +624,37 @@ function buildSurpriseText(){
   const e=S.pathakQs.energy||"solid";
   const w=S.pathakQs.work||"none";
   const b=S.pathakQs.move||"bold";
-  const energyLine=e==="locked in"?"i am LOCKED in today and i have a plan 🔐"
-    :e==="fumes"?"okay i'm running on fumes BUT i have an idea that might fix that ☕"
-    :e==="depends"?"the coffee hit different today and so did this idea ☕✨"
-    :"okay so i woke up feeling kinda good today 🌤️";
-  const workLine=w==="none"||w==="barely"?"zero work thoughts. head fully empty. all yours. 🧘"
-    :w==="stressed"?"i know i've been in my head about work but i want today to be different"
-    :"work can wait, this can't";
-  const boldLine=b==="bold"||b==="pretty bold"?"i'm going full send on this one"
-    :"i'm saying it anyway even if it's a little scary";
-  return `${energyLine}\n\n${workLine} 🥺\n\n${boldLine} —\n\ni got us tickets to Colombia 🇨🇴 vs Jordan 🇯🇴 today at Snapdragon Stadium 🏟️\n\nkickoff is at 4pm. there will be drums, yellow jerseys everywhere, and me pretending i understand offsides 😂\n\ni also maybe built a whole app for us to use at the game because i wanted today to actually be a thing\n\nso. would you want to come? with me? today? ⚽💛`;
+  const opener=e==="locked in"
+    ?"okay so. i'm not usually good at this but i feel weirdly brave today and i need to say something before that goes away —"
+    :e==="fumes"
+    ?"okay so. i'm running on approximately zero sleep but one specific thought has been very loud all morning and i think it wants to be said —"
+    :e==="depends"
+    ?"okay so. the coffee kicked in and so did a feeling and now here we are —"
+    :"okay so. i need to say something and if i think about it too long i won't say it so —";
+  const workBit=w==="stressed"||w==="little"
+    ?"\n\ni know i've had a lot going on in my head lately. i want today to be different. like intentionally put-the-phone-down different."
+    :"";
+  const coreBit=`\n\ni really want to hang out with you today\n\nlike... a lot\n\nalso separately: i love soccer. like. genuinely a lot.\n\nand then it hit me — what if both of those things happened at the same time\n\nmy brain genuinely short-circuited for a second thinking about it 😭\n\ncolombia 🇨🇴 is playing jordan 🇯🇴 today at snapdragon stadium 🏟️ kickoff is at 4pm and i've already looked up the trolley route because that's the kind of person i apparently am now\n\ni also maybe built us a little app for the afternoon because i wanted today to actually feel like a thing and not just a thing we did`;
+  const closer=b==="bold"||b==="pretty bold"
+    ?"\n\nso. do you wanna? with me? today? ⚽\n\n(you don't have to say yes. but also please say yes. okay bye 💛)"
+    :"\n\nso. do you wanna? with me? today? ⚽\n\n(no pressure. there's a little pressure. i'm bad at this. you know this. please say yes anyway 💛)";
+  return opener+workBit+coreBit+closer;
+}
+
+function surpriseSMSLink(txt){
+  return `sms:9166777839;body=${encodeURIComponent(txt)}`;
 }
 
 function renderSurpriseReveal(){
   const txt=buildSurpriseText();
+  const smsUrl=surpriseSMSLink(txt);
   $app().innerHTML=`<div class="screen">
     <div class="eyebrow center">coach ball's got a message for you 💌</div>
-    <h2 class="h2" style="text-align:center;margin:10px 0 18px">your move, Pathak</h2>
+    <h2 class="h2" style="text-align:center;margin:10px 0 14px">your move, Pathak</h2>
     <div class="msg-bubble">${txt.replace(/\n/g,"<br/>")}</div>
-    <p class="muted center" style="font-size:.8rem;margin:14px 0 20px">send that to Rahman however you want 📱 — when she responds, come back here</p>
+    <div class="spacer"></div>
+    <a class="btn alt" href="${smsUrl}" style="text-decoration:none">💌 open in messages →</a>
+    <p class="muted center" style="font-size:.76rem;margin:8px 0 18px">opens a pre-written text to Rahman · edit before sending</p>
     <button class="btn" onclick="renderSheYes()">she said YES 💛</button>
     <button class="btn ghost" style="margin-top:10px" onclick="renderSheNo()">still working on it... 😬</button>
   </div>`;
@@ -707,7 +719,7 @@ function renderSessionScreen(){
   $app().innerHTML=`<div class="screen center">
     <div style="font-size:3.6rem">⚽</div>
     <div class="eyebrow" style="margin-top:12px">game day, june 7</div>
-    <h1 class="h1" style="margin:8px 0 4px">touchdown.</h1>
+    <h1 class="h1" style="margin:8px 0 4px">foulplay.</h1>
     <p class="muted" style="max-width:280px;margin:0 auto 28px;font-size:.92rem">
       Colombia vs. Jordan · Snapdragon Stadium · 4:00 PM
     </p>
@@ -876,7 +888,7 @@ function renderFeed(){
   if(!ev.length){f.innerHTML=`<p class="muted" style="font-size:.88rem">No events yet — Coach Ball'll holler when something happens. ⚽</p>`;return;}
   f.innerHTML=ev.slice().reverse().map(e=>`<div class="feed-item">
     <div class="min">${e.min}'</div>
-    <div><b>${e.icon||""} ${esc(e.title)}</b><div class="muted" style="font-size:.8rem">${esc(e.detail||"detail not available")}</div></div>
+    <div><b>${e.icon||""} ${esc(e.title)}</b><div class="muted" style="font-size:.8rem">${esc(e.detail||"")}</div></div>
   </div>`).join("");
 }
 
@@ -925,17 +937,17 @@ function tabHis(){return `<section id="tab-his" class="tab pad">
   </div>
 
   <div class="spacer"></div>
-  <div class="card" style="border-color:var(--terra)">
+  <div class="card" style="border-color:var(--blue2)">
     <div style="font-weight:700;margin-bottom:4px">🔒 your secret wager</div>
-    <p class="muted" style="font-size:.8rem;margin-bottom:10px">Only you can see this until the recap reveal. Type whatever you want — a dare, a favor, a dinner, a bit. Locked until the final whistle.</p>
+    <p class="muted" style="font-size:.8rem;margin-bottom:10px">Only you can see this until the recap reveal. A dare, a favor, a dinner — whatever you want to put up. Locked until the final whistle.</p>
     ${S.wagerRevealed
-      ? `<div class="logline">${esc(S.wagerHer||"(nothing wagered)")}</div>`
-      : `<textarea class="note" id="wagerHerIn" placeholder="e.g. 'if i win, you have to learn the colombia chant'" style="min-height:80px">${esc(S.wagerHer||"detail not available")}</textarea>
+      ? `<div class="logline">${esc(S.wagerHim||"(nothing wagered)")}</div>`
+      : `<textarea class="note" id="wagerHimIn" placeholder="e.g. 'if i win, you have to watch a full match with me every weekend'" style="min-height:80px">${esc(S.wagerHim||"")}</textarea>
          <div class="spacer"></div>
-         <button class="btn ghost" onclick="saveWager('her')">seal my wager 🔒</button>
-         ${S.wagerHer ? `<p class="muted" style="font-size:.76rem;margin-top:6px">✅ sealed — editable until the recap</p>` : ""}`
+         <button class="btn ghost" onclick="saveWager('him')">seal my wager 🔒</button>
+         ${S.wagerHim ? `<p class="muted" style="font-size:.76rem;margin-top:6px">✅ sealed — editable until the recap</p>` : ""}`
     }
-    ${S.wagerHim && !S.wagerRevealed ? `<div class="divider"></div><p class="muted" style="font-size:.8rem">Pathak's wager: <b>🔒 sealed</b> — revealed at the end</p>` : ""}
+    ${S.wagerHer && !S.wagerRevealed ? `<div class="divider"></div><p class="muted" style="font-size:.8rem">Rahman's wager: <b>🔒 sealed</b> — revealed at the end</p>` : ""}
   </div>
 </section>`;}
 
@@ -990,17 +1002,17 @@ function tabHers(){return `<section id="tab-hers" class="tab pad">
   </div>
 
   <div class="spacer"></div>
-  <div class="card" style="border-color:var(--blue2)">
+  <div class="card" style="border-color:var(--terra)">
     <div style="font-weight:700;margin-bottom:4px">🔒 your secret wager</div>
-    <p class="muted" style="font-size:.8rem;margin-bottom:10px">Only you can see this until the recap reveal. A dare, a favor, a dinner — whatever you want to put up.</p>
+    <p class="muted" style="font-size:.8rem;margin-bottom:10px">Only you can see this until the recap reveal. A dare, a favor, a dinner — whatever you want to put up. Locked until the final whistle.</p>
     ${S.wagerRevealed
-      ? `<div class="logline">${esc(S.wagerHim||"(nothing wagered)")}</div>`
-      : `<textarea class="note" id="wagerHimIn" placeholder="e.g. 'if i win, you have to watch a full match with me every weekend'" style="min-height:80px">${esc(S.wagerHim||"detail not available")}</textarea>
+      ? `<div class="logline">${esc(S.wagerHer||"(nothing wagered)")}</div>`
+      : `<textarea class="note" id="wagerHerIn" placeholder="e.g. 'if i win, you have to learn the colombia chant'" style="min-height:80px">${esc(S.wagerHer||"")}</textarea>
          <div class="spacer"></div>
-         <button class="btn ghost" onclick="saveWager('him')">seal my wager 🔒</button>
-         ${S.wagerHim ? `<p class="muted" style="font-size:.76rem;margin-top:6px">✅ sealed — editable until the recap</p>` : ""}`
+         <button class="btn ghost" onclick="saveWager('her')">seal my wager 🔒</button>
+         ${S.wagerHer ? `<p class="muted" style="font-size:.76rem;margin-top:6px">✅ sealed — editable until the recap</p>` : ""}`
     }
-    ${S.wagerHer && !S.wagerRevealed ? `<div class="divider"></div><p class="muted" style="font-size:.8rem">Rahman's wager: <b>🔒 sealed</b> — revealed at the end</p>` : ""}
+    ${S.wagerHim && !S.wagerRevealed ? `<div class="divider"></div><p class="muted" style="font-size:.8rem">Pathak's wager: <b>🔒 sealed</b> — revealed at the end</p>` : ""}
   </div>
 
   <div class="spacer"></div>
@@ -1081,7 +1093,8 @@ function photoCell(p){
   return `<div class="photo-cell ${img?'done':''}" onclick="document.getElementById('ph-${p.id}').click()">
     <div class="cap">${img?'✅ ':'📷 '}${p.cap}</div>
     <div class="hint">${p.hint}</div>
-    ${img?`<img src="${img}" loading="lazy"/>`:''}    <input type="file" id="ph-${p.id}" accept="image/*" capture="environment" style="display:none"
+    ${img?`<img src="${img}" loading="lazy"/>`:''}  
+    <input type="file" id="ph-${p.id}" accept="image/*" capture="environment" style="display:none"
       onchange="snap('${p.id}',this)"/>
   </div>`;}
 
@@ -1114,7 +1127,7 @@ function saveWager(who){
   if(who==="her")S.wagerHer=v; else S.wagerHim=v;
   syncSave();
   flashMascot("Sealed. Cannot wait to see how this plays out. 🔒");
-  render();go("hers");
+  render();go(who==="her"?"hers":"his");
 }
 
 /* ===================== RECAP + REPORT CARDS ===================== */
@@ -1163,7 +1176,7 @@ function openRecap(){
     {k:"Prop Bet IQ",v:`${himBets}/${BETS.length} correct · ${himBets>=6?"genius":himBets>=4?"solid":himBets>=2?"lucky":"needs coaching"}`}
   ];
 
-  const herVerdict=herChaos>=8?"Be curious, not judgmental. (About soccer. She's trying.)": foodTheft>0?"There's two things I never like to lose — a match and a fry. She got one of them.":"Don't you dare settle for fine. She didn't. Not once today.";
+  const herVerdict=herChaos>=8?"Be curious, not judgmental. (About soccer. She's trying.)":foodTheft>0?"There's two things I never like to lose — a match and a fry. She got one of them.":"Don't you dare settle for fine. She didn't. Not once today.";
   const himVerdict=refYells>=4?"Taking on a challenge is a lot like riding a horse. He was bucked off by the ref today.":commCount>=5?"Football is life. This man's whole life.":"If you care about someone and you got a little love in your heart — that's what today was.";
 
   function gradeCard(name,title,grades,verdict,color,wager){
@@ -1191,8 +1204,7 @@ function openRecap(){
       ${betWinner.includes("draw")?"":"<div style='font-size:.85rem;opacity:.85;margin-top:4px'>buys the tacos 🌮</div>"}
     </div>
 
-    ${!S.wagerRevealed&&(S.wagerHer||S.wagerHim)?`<button class="btn alt" style="margin-bottom:14px" onclick="revealWagers()">🔓 reveal the secret wagers</button>`:
-      S.wagerRevealed?`<div class="card" style="margin-bottom:14px;background:#FFF3CC">
+    ${!S.wagerRevealed&&(S.wagerHer||S.wagerHim)?`<button class="btn alt" style="margin-bottom:14px" onclick="revealWagers()">🔓 reveal the secret wagers</button>`:S.wagerRevealed?`<div class="card" style="margin-bottom:14px;background:#FFF3CC">
         <div style="font-weight:700;margin-bottom:10px">🔓 the wagers, revealed</div>
         <p class="muted" style="font-size:.8rem;margin-bottom:4px">Rahman's wager:</p>
         <div class="logline">${esc(S.wagerHer||"(nothing wagered)")}</div>
@@ -1482,7 +1494,7 @@ function bump(group,i,d){
 }
 function syncSave(){saveLocal();pushSync();}
 function rand(a){return a[Math.floor(Math.random()*a.length)];}
-function esc(s){return(s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\'":"&quot;"}[c]));}
+function esc(s){return(s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
 function nowClock(){const d=new Date();let h=d.getHours(),m=d.getMinutes();const ap=h>=12?"PM":"AM";h=h%12||12;return h+":"+(m<10?"0":"")+m+" "+ap;}
 function hideNav(){document.getElementById("nav").style.display="none";}
 function showNav(){document.getElementById("nav").style.display="flex";}
